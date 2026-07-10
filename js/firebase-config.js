@@ -137,17 +137,6 @@ window.fb = {
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   },
 
-  // Helper: Enroll user in course
-  async enrollUser(uid, courseId) {
-    await db.collection('enrollments').add({
-      userId: uid,
-      courseId: courseId,
-      progress: 0,
-      enrolledAt: firebase.firestore.FieldValue.serverTimestamp(),
-      lastAccessed: firebase.firestore.FieldValue.serverTimestamp()
-    });
-  },
-
   // Helper: Check if user is enrolled in a course
   async isEnrolled(uid, courseId) {
     const snapshot = await db.collection('enrollments')
@@ -165,6 +154,33 @@ window.fb = {
       .where('status', '==', 'pending')
       .get();
     return !snapshot.empty;
+  },
+
+  // Helper: Enroll in free course (creates confirmed payment + enrollment)
+  async enrollFreeCourse(uid, courseId, courseTitle) {
+    const paymentRef = await db.collection('payments').add({
+      userId: uid,
+      courseId: courseId,
+      courseTitle: courseTitle,
+      userName: '',
+      userEmail: '',
+      amount: 0,
+      status: 'confirmed',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await db.collection('enrollments').add({
+      userId: uid,
+      courseId: courseId,
+      progress: 0,
+      enrolledAt: firebase.firestore.FieldValue.serverTimestamp(),
+      lastAccessed: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    const courseRef = db.doc('courses/' + courseId);
+    const courseDoc = await courseRef.get();
+    if (courseDoc.exists) {
+      await courseRef.update({ students: (courseDoc.data().students || 0) + 1 });
+    }
+    return paymentRef;
   },
 
   // Helper: Get user's pending payments

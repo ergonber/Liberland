@@ -1056,7 +1056,7 @@
               alert('Ya estás inscrito en este curso.');
               return;
             }
-            await window.fb.enrollUser(user.uid, courseId);
+            await window.fb.enrollFreeCourse(user.uid, courseId, title);
             alert('¡Inscrito exitosamente! Ahora puedes acceder al curso desde tu panel.');
             return;
           }

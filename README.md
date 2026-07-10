@@ -113,7 +113,7 @@ service cloud.firestore {
     match /enrollments/{enrollmentId} {
       allow read: if request.auth != null && resource.data.userId == request.auth.uid;
       allow read: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
-      allow create: if request.auth != null;
+      allow create: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
       allow update: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
     match /payments/{paymentId} {
@@ -152,6 +152,27 @@ Para poblar Firestore con cursos de ejemplo, abre la consola del navegador en cu
 ```javascript
 seedFirestore()
 ```
+
+## Seguridad
+
+### Protecciones implementadas
+
+- **Inscripciones**: Solo el admin puede crear inscripciones (Firestore rule). Las inscripciones pasan por el flujo de pago confirmado.
+- **Cursos gratuitos**: Se crea un pago con `amount: 0` y `status: 'confirmed'` automáticamente, luego se genera la inscripción.
+- **Funciones admin**: `confirmPayment`, `rejectPayment`, `createPayment` no están expuestas en `window.fb` — no se pueden ejecutar desde la consola del navegador.
+- **Roles de usuario**: `admin`, `instructor`, `student` — verificados en Firestore rules y en el cliente.
+- **Cursos públicos**: El catálogo y detalle de cursos son públicos (necesario para landing page), pero el contenido del curso (video/clases) requiere inscripción.
+
+### Reglas de seguridad (resumen)
+
+| Colección | Lectura | Escritura |
+|-----------|---------|-----------|
+| `users` | Propio usuario + admin | Propio usuario + admin |
+| `courses` | Público | Solo admin |
+| `enrollments` | Propio usuario + admin | Solo admin |
+| `payments` | Propio usuario + admin | Crear: propio usuario / Update: solo admin |
+| `wishlist` | Propio usuario | Propio usuario |
+| `config` | Público | Solo admin |
 
 ## Deploy
 
