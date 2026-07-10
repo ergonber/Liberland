@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curso: Smart Contracts con Solidity | Liberland Academy</title>
+  <meta name="description" content="Aprende a crear contratos inteligentes en Ethereum desde cero con Solidity.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Course Page Styles -->
+  <style>
+    .course-page {
+      padding-top: 100px;
+      min-height: 100vh;
+    }
+    
+    .course-hero {
+      background: var(--secondary);
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    
+    .course-hero-content {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 4rem;
+      align-items: center;
+    }
+    
+    .course-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    .course-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
+    
+    .course-breadcrumb a {
+      color: var(--text-muted);
+    }
+    
+    .course-breadcrumb a:hover {
+      color: var(--accent);
+    }
+    
+    .course-breadcrumb i {
+      font-size: 0.7rem;
+    }
+    
+    .course-category {
+      display: inline-block;
+      background: rgba(252, 210, 5, 0.15);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      width: fit-content;
+    }
+    
+    .course-info h1 {
+      font-size: 2.5rem;
+      line-height: 1.2;
+    }
+    
+    .course-info > p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+    
+    .course-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+    
+    .course-meta span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .course-meta i {
+      color: var(--accent);
+    }
+    
+    .course-rating {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .course-rating .stars {
+      color: #ffd700;
+    }
+    
+    .course-instructor {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 1rem;
+      background: var(--glass);
+      border-radius: 12px;
+      width: fit-content;
+    }
+    
+    .instructor-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #000;
+    }
+    
+    .instructor-info h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+    }
+    
+    .instructor-info p {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+    
+    /* Course Preview Card */
+    .course-preview-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: sticky;
+      top: 100px;
+    }
+    
+    .preview-video {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: #000;
+    }
+    
+    .preview-video img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.7;
+    }
+    
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      background: var(--gradient);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #000;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .play-button:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+    
+    .preview-content {
+      padding: 1.5rem;
+    }
+    
+    .preview-price {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+    
+    .preview-price .current {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    
+    .preview-price .original {
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      text-decoration: line-through;
+    }
+    
+    .preview-price .discount {
+      background: rgba(252, 210, 5, 0.15);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    .preview-content .btn {
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    
+    .preview-features {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--glass-border);
+    }
+    
+    .preview-features h4 {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+    }
+    
+    .feature-list {
+      list-style: none;
+    }
+    
+    .feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0.75rem 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    
+    .feature-list li i {
+      width: 20px;
+      color: var(--accent);
+    }
+    
+    /* Course Content Section */
+    .course-content-section {
+      padding: 4rem 0;
+    }
+    
+    .course-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 4rem;
+    }
+    
+    .course-description {
+      margin-bottom: 3rem;
+    }
+    
+    .course-description h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .course-description p {
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    
+    .course-description ul {
+      margin: 1.5rem 0;
+      padding-left: 1.5rem;
+    }
+    
+    .course-description li {
+      margin-bottom: 0.75rem;
+      color: var(--text-muted);
+    }
+    
+    /* Course Curriculum */
+    .curriculum h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .module {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    
+    .module-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .module-header:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+    
+    .module-header h3 {
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .module-header h3 i {
+      color: var(--accent);
+    }
+    
+    .module-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+    
+    .module-content {
+      display: none;
+      padding: 0 1.25rem 1.25rem;
+      border-top: 1px solid var(--glass-border);
+    }
+    
+    .module.active .module-content {
+      display: block;
+    }
+    
+    .module.active .module-header {
+      border-bottom: 1px solid var(--glass-border);
+    }
+    
+    .lesson {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    
+    .lesson:last-child {
+      border-bottom: none;
+    }
+    
+    .lesson-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .lesson-info i {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+    
+    .lesson-info span {
+      font-size: 0.95rem;
+    }
+    
+    .lesson-duration {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+    
+    .lesson-preview {
+      font-size: 0.8rem;
+      color: var(--accent);
+      cursor: pointer;
+    }
+    
+    .lesson-preview:hover {
+      text-decoration: underline;
+    }
+    
+    /* Requirements */
+    .requirements {
+      margin-top: 3rem;
+    }
+    
+    .requirements h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .requirements-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    
+    .requirements-col h3 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .requirements-col h3 i {
+      color: var(--accent);
+    }
+    
+    .requirements-col ul {
+      list-style: none;
+    }
+    
+    .requirements-col li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 0.5rem 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    
+    .requirements-col li i {
+      color: var(--accent);
+      margin-top: 4px;
+    }
+    
+    @media (max-width: 1024px) {
+      .course-hero-content,
+      .course-layout {
+        grid-template-columns: 1fr;
+      }
+      
+      .course-preview-card {
+        position: static;
+        max-width: 400px;
+      }
+      
+      .requirements-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .course-info h1 {
+        font-size: 2rem;
+      }
+    }
+
+    /* Payment Modal */
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--secondary); border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
+      width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 2rem;
+    }
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;
+    }
+    .modal-header h2 { font-size: 1.4rem; }
+    .modal-close {
+      background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;
+    }
+    .modal-close:hover { color: var(--text); }
+  </style>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/Liberland_logo.png">
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <img src="images/Liberland_logo.png" alt="Liberland Logo">
+        <span class="logo-text">Liberland Academy</span>
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="index.html#courses">Cursos</a></li>
+        <li><a href="index.html#pricing">Precios</a></li>
+        <li><a href="login.html" class="nav-cta">Iniciar Sesión</a></li>
+      </ul>
+      
+      <div class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== COURSE PAGE ==================== -->
+  <main class="course-page">
+    <!-- Course Hero -->
+    <section class="course-hero">
+      <div class="container">
+        <div class="course-hero-content">
+          <div class="course-info">
+            <div class="course-breadcrumb">
+              <a href="index.html">Inicio</a>
+              <i class="fas fa-chevron-right"></i>
+              <a href="index.html#courses">Cursos</a>
+              <i class="fas fa-chevron-right"></i>
+              <span>Smart Contracts con Solidity</span>
+            </div>
+            
+            <span class="course-category">Blockchain</span>
+            
+            <h1>Smart Contracts con Solidity</h1>
+            
+            <p>Aprende a crear contratos inteligentes en Ethereum desde cero. Domina Solidity, Hardhat y las mejores prácticas de desarrollo seguro.</p>
+            
+            <div class="course-meta">
+              <div class="course-rating">
+                <span class="stars">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+                </span>
+                <span>4.8 (120 reseñas)</span>
+              </div>
+              <span><i class="fas fa-users"></i> 120 estudiantes</span>
+              <span><i class="fas fa-clock"></i> 8 horas</span>
+              <span><i class="fas fa-signal"></i> Intermedio</span>
+            </div>
+            
+            <div class="course-instructor">
+              <div class="instructor-avatar">EG</div>
+              <div class="instructor-info">
+                <h4>Ernesto Gonzales</h4>
+                <p>Smart Contracts Engineer</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Preview Card -->
+          <div class="course-preview-card">
+            <div class="preview-video">
+              <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600&h=340&fit=crop" alt="Course Preview">
+              <div class="play-button">
+                <i class="fas fa-play"></i>
+              </div>
+            </div>
+            
+            <div class="preview-content">
+              <div class="preview-price">
+                <span class="current">Bs 199</span>
+                <span class="original">Bs 299</span>
+                <span class="discount">-33%</span>
+              </div>
+              
+              <button class="btn btn-primary">
+                <i class="fas fa-shopping-cart"></i>
+                Comprar Curso
+              </button>
+              
+              <button class="btn btn-secondary">
+                <i class="fas fa-gift"></i>
+                Agregar al Carrito
+              </button>
+              
+              <div class="preview-features">
+                <h4>Este curso incluye:</h4>
+                <ul class="feature-list">
+                  <li><i class="fas fa-video"></i> 8 horas de video HD</li>
+                  <li><i class="fas fa-file-code"></i> 15 proyectos prácticos</li>
+                  <li><i class="fas fa-certificate"></i> Certificado de finalización</li>
+                  <li><i class="fas fa-infinity"></i> Acceso de por vida</li>
+                  <li><i class="fas fa-mobile-alt"></i> Acceso en móvil y TV</li>
+                  <li><i class="fas fa-headset"></i> Soporte por WhatsApp</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Course Content -->
+    <section class="course-content-section">
+      <div class="container">
+        <div class="course-layout">
+          <div class="course-main">
+            <!-- Description -->
+            <div class="course-description">
+              <h2>Descripción del Curso</h2>
+              <p>
+                En este curso aprenderás todo lo necesario para crear contratos inteligentes profesionales en la blockchain de Ethereum. Desde los conceptos básicos hasta técnicas avanzadas de desarrollo seguro.
+              </p>
+              <p>
+                Al finalizar, serás capaz de desarrollar, testear y desplegar smart contracts que cumplan con los estándares de la industria.
+              </p>
+              
+              <h3 style="margin-top: 2rem; margin-bottom: 1rem;">¿Qué aprenderás?</h3>
+              <ul>
+                <li>Fundamentos de Solidity y la EVM</li>
+                <li>Configuración de entorno de desarrollo con Hardhat</li>
+                <li>Patrones de diseño de contratos inteligentes</li>
+                <li>Testing y debugging de contratos</li>
+                <li>Seguridad y mejores prácticas</li>
+                <li>Despliegue en redes de prueba y mainnet</li>
+              </ul>
+            </div>
+            
+            <!-- Curriculum -->
+            <div class="curriculum">
+              <h2>Contenido del Curso</h2>
+              
+              <div class="module active">
+                <div class="module-header">
+                  <h3>
+                    <i class="fas fa-chevron-down"></i>
+                    Módulo 1: Introducción a Blockchain
+                  </h3>
+                  <div class="module-meta">
+                    <span>4 lecciones</span>
+                    <span>45 min</span>
+                  </div>
+                </div>
+                <div class="module-content">
+                  <div class="lesson">
+                    <div class="lesson-info">
+                      <i class="fas fa-play-circle"></i>
+                      <span>¿Qué es Blockchain?</span>
+                    </div>
+                    <div class="lesson-duration">12 min</div>
+                    <span class="lesson-preview">Preview</span>
+                  </div>
+                  <div class="lesson">
+                    <div class="lesson-info">
+                      <i class="fas fa-play-circle"></i>
+                      <span>Cómo funciona Ethereum</span>
+                    </div>
+                    <div class="lesson-duration">15 min</div>
+                  </div>
+                  <div class="lesson">
+                    <div class="lesson-info">
+                      <i class="fas fa-play-circle"></i>
+                      <span>Introducción a Smart Contracts</span>
+                    </div>
+                    <div class="lesson-duration">10 min</div>
+                  </div>
+                  <div class="lesson">
+                    <div class="lesson-info">
+                      <i class="fas fa-file-alt"></i>
+                      <span>Ejercicio: Instalación de entorno</span>
+                    </div>
+                    <div class="lesson-duration">8 min</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="module">
+                <div class="module-header">
+                  <h3>
+                    <i class="fas fa-chevron-right"></i>
+                    Módulo 2: Fundamentos de Solidity
+                  </h3>
+                  <div class="module-meta">
+                    <span>6 lecciones</span>
+                    <span>1h 30min</span>
+                  </div>
+                </div>
+                <div class="module-content">
+                  <div class="lesson">
+                    <div class="lesson-info">
+                      <i class="fas fa-play-circle"></i>
+                      <span>Tipo de datos en Solidity</span>
+                    </div>
+                    <div class="lesson-duration">18 min</div>
+                  </div>
+                  <div class="lesson">
+                    <div class="lesson-info">
+                      <i class="fas fa-play-circle"></i>
+                      <span>Variables y funciones</span>
+                    </div>
+                    <div class="lesson-duration">20 min</div>
+                  </div>
+                  <div class="lesson">
+                    <div class="lesson-info">
+                      <i class="fas fa-play-circle"></i>
+                      <span>Estructuras de control</span>
+                    </div>
+                    <div class="lesson-duration">15 min</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="module">
+                <div class="module-header">
+                  <h3>
+                    <i class="fas fa-chevron-right"></i>
+                    Módulo 3: Contratos con Estado
+                  </h3>
+                  <div class="module-meta">
+                    <span>5 lecciones</span>
+                    <span>1h 15min</span>
+                  </div>
+                </div>
+                <div class="module-content"></div>
+              </div>
+              
+              <div class="module">
+                <div class="module-header">
+                  <h3>
+                    <i class="fas fa-chevron-right"></i>
+                    Módulo 4: ERC-20 Tokens
+                  </h3>
+                  <div class="module-meta">
+                    <span>5 lecciones</span>
+                    <span>1h 20min</span>
+                  </div>
+                </div>
+                <div class="module-content"></div>
+              </div>
+              
+              <div class="module">
+                <div class="module-header">
+                  <h3>
+                    <i class="fas fa-chevron-right"></i>
+                    Módulo 5: Testing con Hardhat
+                  </h3>
+                  <div class="module-meta">
+                    <span>4 lecciones</span>
+                    <span>1h 10min</span>
+                  </div>
+                </div>
+                <div class="module-content"></div>
+              </div>
+              
+              <div class="module">
+                <div class="module-header">
+                  <h3>
+                    <i class="fas fa-chevron-right"></i>
+                    Módulo 6: Seguridad y Auditoría
+                  </h3>
+                  <div class="module-meta">
+                    <span>4 lecciones</span>
+                    <span>1h 05min</span>
+                  </div>
+                </div>
+                <div class="module-content"></div>
+              </div>
+              
+              <div class="module">
+                <div class="module-header">
+                  <h3>
+                    <i class="fas fa-chevron-right"></i>
+                    Módulo 7: Despliegue en Mainnet
+                  </h3>
+                  <div class="module-meta">
+                    <span>3 lecciones</span>
+                    <span>55 min</span>
+                  </div>
+                </div>
+                <div class="module-content"></div>
+              </div>
+            </div>
+            
+            <!-- Requirements -->
+            <div class="requirements">
+              <h2>Requisitos</h2>
+              <div class="requirements-grid">
+                <div class="requirements-col">
+                  <h3><i class="fas fa-check-circle"></i> Requisitos previos</h3>
+                  <ul>
+                    <li><i class="fas fa-check"></i> Conocimientos básicos de programación</li>
+                    <li><i class="fas fa-check"></i> Una computadora con acceso a internet</li>
+                    <li><i class="fas fa-check"></i> Ganas de aprender</li>
+                  </ul>
+                </div>
+                <div class="requirements-col">
+                  <h3><i class="fas fa-laptop-code"></i> Herramientas necesarias</h3>
+                  <ul>
+                    <li><i class="fas fa-check"></i> VS Code o editor de código</li>
+                    <li><i class="fas fa-check"></i> Node.js instalado</li>
+                    <li><i class="fas fa-check"></i> MetaMask (extensión de navegador)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Payment Modal -->
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal" style="max-width:500px;">
+      <div class="modal-header">
+        <h2>Comprar Curso</h2>
+        <button class="modal-close" onclick="document.getElementById('paymentModal').classList.remove('active')">&times;</button>
+      </div>
+      <div style="text-align:center;">
+        <div style="background:var(--glass);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;">
+          <p style="color:var(--text-dim);margin-bottom:0.5rem;">Curso:</p>
+          <h3 id="paymentCourseTitle" style="margin-bottom:0.5rem;">-</h3>
+          <div style="font-family:'DM Serif Display',serif;font-size:2rem;font-weight:700;color:var(--accent);" id="paymentPrice">Bs 0</div>
+        </div>
+        <div style="margin-bottom:1.5rem;">
+          <p style="font-weight:600;margin-bottom:0.75rem;">Escanea el QR para pagar</p>
+          <img src="images/QR_Liberland.jpeg" alt="QR de pago" style="width:220px;height:220px;border-radius:12px;border:2px solid var(--glass-border);object-fit:contain;background:#fff;">
+          <p style="font-size:0.85rem;color:var(--text-dim);margin-top:0.5rem;">Liberland Academy · Tigo Money</p>
+        </div>
+        <div style="background:rgba(252,210,5,0.08);border-radius:10px;padding:1rem;margin-bottom:1.5rem;text-align:left;">
+          <p style="font-weight:600;margin-bottom:0.5rem;"><i class="fas fa-info-circle" style="color:var(--accent);"></i> Instrucciones:</p>
+          <ol style="font-size:0.9rem;color:var(--text-muted);padding-left:1.2rem;margin:0;">
+            <li>Escanea el QR con tu app bancaria</li>
+            <li>Paga el monto exacto del curso</li>
+            <li>Toma captura del comprobante</li>
+            <li>Envía la captura por WhatsApp</li>
+          </ol>
+        </div>
+        <a id="whatsappLink" href="https://wa.me/59172209148?text=Hola! Quiero inscribirme en un curso de Liberland Academy" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;text-decoration:none;margin-bottom:0.75rem;">
+          <i class="fab fa-whatsapp"></i> Enviar Comprobante por WhatsApp
+        </a>
+        <button id="confirmPaymentBtn" disabled style="width:100%;padding:14px;border:none;border-radius:10px;background:rgba(255,255,255,0.1);color:var(--text-dim);font-weight:600;font-size:1rem;cursor:not-allowed;margin-bottom:0.75rem;transition:all 0.3s ease;">
+          <i class="fas fa-check-circle"></i> Pago Efectuado
+        </button>
+        <p id="paymentHint" style="font-size:0.8rem;color:var(--text-dim);">Envía el comprobante por WhatsApp y luego haz clic en "Pago Efectuado"</p>
+
+        <!-- Confirmation message (hidden initially) -->
+        <div id="paymentConfirmation" style="display:none;text-align:center;padding:1rem 0;">
+          <div style="font-size:3rem;margin-bottom:1rem;">✅</div>
+          <h3 style="margin-bottom:0.5rem;">Pago Registrado</h3>
+          <p style="color:var(--text-muted);margin-bottom:1.5rem;">Tu pago está pendiente de aprobación por parte del admin. Recibirás acceso al curso una vez confirmado.</p>
+          <button onclick="document.getElementById('paymentModal').classList.remove('active')" style="padding:12px 30px;border:none;border-radius:10px;background:var(--gradient);color:#000;font-weight:600;font-size:1rem;cursor:pointer;">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Module accordion
+    document.querySelectorAll('.module-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const module = header.parentElement;
+        const icon = header.querySelector('i');
+        module.classList.toggle('active');
+        icon.className = module.classList.contains('active') ? 'fas fa-chevron-down' : 'fas fa-chevron-right';
+      });
+    });
+
+    // Load course from Firestore
+    let currentCourse = null;
+    let currentCourseId = null;
+
+    async function loadCourse() {
+      const params = new URLSearchParams(window.location.search);
+      currentCourseId = params.get('id');
+      if (!currentCourseId) return;
+
+      try {
+        currentCourse = await window.fb.getCourse(currentCourseId);
+        if (!currentCourse) return;
+
+        document.title = `${currentCourse.title} | Liberland Academy`;
+        document.querySelector('.course-breadcrumb span').textContent = currentCourse.title;
+        document.querySelector('.course-category').textContent = currentCourse.category;
+        document.querySelector('.course-info h1').textContent = currentCourse.title;
+        document.querySelector('.course-info > p').textContent = currentCourse.description;
+
+        // Meta
+        const stars = currentCourse.rating >= 4.5 ? 5 : currentCourse.rating >= 3.5 ? 4 : currentCourse.rating >= 2.5 ? 3 : 2;
+        const starsHtml = Array(stars).fill('<i class="fas fa-star"></i>').join('') +
+          (currentCourse.rating % 1 >= 0.5 ? '<i class="fas fa-star-half-alt"></i>' : '');
+        document.querySelector('.course-rating .stars').innerHTML = starsHtml;
+        document.querySelector('.course-rating span:last-child').textContent = `${currentCourse.rating || 0} (${currentCourse.reviews || 0} reseñas)`;
+        document.querySelectorAll('.course-meta span')[1].innerHTML = `<i class="fas fa-users"></i> ${currentCourse.students || 0} estudiantes`;
+        document.querySelectorAll('.course-meta span')[2].innerHTML = `<i class="fas fa-clock"></i> ${currentCourse.duration}`;
+        document.querySelectorAll('.course-meta span')[3].innerHTML = `<i class="fas fa-signal"></i> ${currentCourse.level}`;
+
+        // Instructor
+        document.querySelector('.instructor-avatar').textContent = (currentCourse.instructorName || 'EG').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        document.querySelector('.instructor-info h4').textContent = currentCourse.instructorName || 'Instructor';
+        document.querySelector('.instructor-info p').textContent = currentCourse.instructorTitle || '';
+
+        // Preview card
+        document.querySelector('.preview-video img').src = currentCourse.image || 'https://via.placeholder.com/600x340';
+
+        // Check for active sale
+        const saleConfig = await window.fb.getSaleConfig();
+        let saleActive = false;
+        let salePrice = saleConfig.salePrice || 99;
+        if (saleConfig.active && saleConfig.endTime && currentCourse.priceBs > 0) {
+          const endDate = saleConfig.endTime.toDate ? saleConfig.endTime.toDate() : new Date(saleConfig.endTime);
+          if (endDate > new Date()) {
+            saleActive = true;
+            window.saleActive = true;
+            window.salePrice = salePrice;
+            window.saleEndTime = endDate;
+          }
+        }
+        window.saleActive = window.saleActive || false;
+
+        const currentPriceEl = document.querySelector('.current');
+        const originalPriceEl = document.querySelector('.original');
+        const discountEl = document.querySelector('.discount');
+
+        if (saleActive && currentCourse.priceBs > 0) {
+          currentPriceEl.textContent = `Bs ${salePrice}`;
+          currentPriceEl.style.color = '#ef4444';
+          originalPriceEl.textContent = `Bs ${currentCourse.priceBs}`;
+          originalPriceEl.style.textDecoration = 'line-through';
+          const pct = Math.round((1 - salePrice / currentCourse.priceBs) * 100);
+          discountEl.textContent = `-${pct}%`;
+          discountEl.style.display = '';
+
+          // Add countdown below the price
+          let countdownEl = document.getElementById('saleCountdownPreview');
+          if (!countdownEl) {
+            countdownEl = document.createElement('div');
+            countdownEl.id = 'saleCountdownPreview';
+            countdownEl.className = 'countdown';
+            countdownEl.style.marginTop = '0.75rem';
+            currentPriceEl.parentElement.appendChild(countdownEl);
+          }
+          function updatePreviewCountdown() {
+            const diff = window.saleEndTime - new Date();
+            if (diff <= 0) {
+              countdownEl.innerHTML = '<span class="countdown-text">La oferta ha expirado</span>';
+              return;
+            }
+            const h = Math.floor(diff / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            countdownEl.innerHTML = `
+              <div class="countdown-unit"><span class="value">${String(h).padStart(2, '0')}</span><span class="label">hs</span></div>
+              <div class="countdown-unit"><span class="value">${String(m).padStart(2, '0')}</span><span class="label">min</span></div>
+              <div class="countdown-unit"><span class="value">${String(s).padStart(2, '0')}</span><span class="label">seg</span></div>
+            `;
+          }
+          updatePreviewCountdown();
+          setInterval(updatePreviewCountdown, 1000);
+        } else {
+          currentPriceEl.textContent = currentCourse.priceBs === 0 ? 'Gratis' : `Bs ${currentCourse.priceBs}`;
+          currentPriceEl.style.color = '';
+          originalPriceEl.textContent = currentCourse.originalPriceBs ? `Bs ${currentCourse.originalPriceBs}` : '';
+          originalPriceEl.style.textDecoration = '';
+          const discount = currentCourse.originalPriceBs && currentCourse.priceBs > 0
+            ? Math.round((1 - currentCourse.priceBs / currentCourse.originalPriceBs) * 100) : 0;
+          if (discount > 0) { discountEl.textContent = `-${discount}%`; discountEl.style.display = ''; }
+          else { discountEl.style.display = 'none'; }
+        }
+
+        // Curriculum
+        const curriculumEl = document.querySelector('.curriculum');
+        if (currentCourse.modules && currentCourse.modules.length > 0) {
+          curriculumEl.innerHTML = '<h2>Contenido del Curso</h2>' + currentCourse.modules.map((mod, i) => `
+            <div class="module${i === 0 ? ' active' : ''}">
+              <div class="module-header">
+                <h3><i class="fas fa-${i === 0 ? 'chevron-down' : 'chevron-right'}"></i> Módulo ${i + 1}: ${mod.title}</h3>
+                <div class="module-meta">
+                  <span>${mod.lessons.length} lecciones</span>
+                  <span>${mod.lessons.reduce((acc, l) => acc + (parseInt(l.duration) || 0), 0)} min</span>
+                </div>
+              </div>
+              <div class="module-content">
+                ${mod.lessons.map(lesson => `
+                  <div class="lesson">
+                    <div class="lesson-info">
+                      <i class="fas fa-${lesson.type === 'exercise' ? 'file-alt' : 'play-circle'}"></i>
+                      <span>${lesson.title}</span>
+                    </div>
+                    <div class="lesson-duration">${lesson.duration}</div>
+                    ${lesson.videoUrl ? '<span class="lesson-preview">Preview</span>' : ''}
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `).join('');
+
+          // Re-attach accordion
+          curriculumEl.querySelectorAll('.module-header').forEach(header => {
+            header.addEventListener('click', () => {
+              const module = header.parentElement;
+              const icon = header.querySelector('i');
+              module.classList.toggle('active');
+              icon.className = module.classList.contains('active') ? 'fas fa-chevron-down' : 'fas fa-chevron-right';
+            });
+          });
+        }
+
+        // Features
+        if (currentCourse.included && currentCourse.included.length > 0) {
+          document.querySelector('.feature-list').innerHTML = currentCourse.included.map(item => {
+            const icons = ['video', 'file-code', 'certificate', 'infinity', 'mobile-alt', 'headset'];
+            const icon = icons[Math.floor(Math.random() * icons.length)] || 'check';
+            return `<li><i class="fas fa-${icon}"></i> ${item}</li>`;
+          }).join('');
+        }
+
+        // Requirements
+        if (currentCourse.requirements) {
+          const prereq = currentCourse.requirements.prerequisites || [];
+          const tools = currentCourse.requirements.tools || [];
+          document.querySelector('.requirements-col:first-child ul').innerHTML = prereq.map(r => `<li><i class="fas fa-check"></i> ${r}</li>`).join('');
+          document.querySelector('.requirements-col:last-child ul').innerHTML = tools.map(t => `<li><i class="fas fa-check"></i> ${t}</li>`).join('');
+        }
+
+      } catch (error) {
+        console.log('Keeping static course content (Firestore not configured)');
+      }
+
+      // Buy button — always attach after load attempt
+      function attachBuyHandler() {
+        document.querySelector('.preview-content .btn-primary').addEventListener('click', async () => {
+          const user = AuthManager.currentUser;
+          if (!user) {
+            window.location.href = 'login.html';
+            return;
+          }
+          // Use sale price if active, otherwise regular price
+          const price = (window.saleActive && currentCourse && currentCourse.priceBs > 0)
+            ? window.salePrice
+            : (currentCourse ? currentCourse.priceBs : 0);
+          const title = currentCourse ? currentCourse.title : 'Curso';
+          const courseId = currentCourseId;
+
+          if (price === 0) {
+            const enrolled = await window.fb.isEnrolled(user.uid, courseId);
+            if (enrolled) {
+              alert('Ya estás inscrito en este curso.');
+              return;
+            }
+            await window.fb.enrollUser(user.uid, courseId);
+            alert('¡Inscrito exitosamente! Ahora puedes acceder al curso desde tu panel.');
+            return;
+          }
+
+          // Check if already enrolled
+          const enrolled = await window.fb.isEnrolled(user.uid, courseId);
+          if (enrolled) {
+            alert('Ya estás inscrito en este curso.');
+            return;
+          }
+
+          // Check if there's already a pending payment
+          const pending = await window.fb.hasPendingPayment(user.uid, courseId);
+          if (pending) {
+            alert('Ya tienes un pago pendiente para este curso. El admin lo revisará pronto.');
+            return;
+          }
+
+          // Store payment data globally for the confirm button
+          window.pendingPaymentData = {
+            userId: user.uid,
+            courseId: courseId,
+            courseTitle: title,
+            userName: user.displayName || AuthManager.userData?.name || '',
+            userEmail: user.email,
+            amount: price
+          };
+
+          // Show payment modal
+          document.getElementById('paymentCourseTitle').textContent = title;
+          document.getElementById('paymentPrice').textContent = `Bs ${price}`;
+          const msg = encodeURIComponent(`Hola! Quiero inscribirme en "${title}" (Bs ${price}). Adjunto comprobante de pago.`);
+          document.getElementById('whatsappLink').href = `https://wa.me/59172209148?text=${msg}`;
+          document.getElementById('paymentModal').classList.add('active');
+
+          // Start countdown for confirm button
+          startPaymentCountdown();
+        });
+      }
+
+      // "Pago Efectuado" button handler
+      const confirmBtn = document.getElementById('confirmPaymentBtn');
+      const hintEl = document.getElementById('paymentHint');
+      let paymentCountdownInterval = null;
+
+      function startPaymentCountdown() {
+        // Clear any existing interval
+        if (paymentCountdownInterval) clearInterval(paymentCountdownInterval);
+        let countdown = 10;
+        confirmBtn.disabled = true;
+        confirmBtn.style.background = 'rgba(255,255,255,0.1)';
+        confirmBtn.style.color = 'var(--text-dim)';
+        confirmBtn.style.cursor = 'not-allowed';
+        hintEl.textContent = 'Envía el comprobante por WhatsApp y luego haz clic en "Pago Efectuado"';
+
+        paymentCountdownInterval = setInterval(() => {
+          countdown--;
+          if (countdown <= 0) {
+            clearInterval(paymentCountdownInterval);
+            paymentCountdownInterval = null;
+            confirmBtn.disabled = false;
+            confirmBtn.style.background = 'var(--gradient)';
+            confirmBtn.style.color = '#000';
+            confirmBtn.style.cursor = 'pointer';
+          } else {
+            hintEl.textContent = `Espera ${countdown}s para confirmar el pago...`;
+          }
+        }, 1000);
+      }
+
+      confirmBtn.addEventListener('click', async () => {
+        if (confirmBtn.disabled) return;
+        const data = window.pendingPaymentData;
+        if (!data) return;
+
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registrando...';
+
+        try {
+          await window.fb.createPayment(data);
+
+          // Hide all siblings of paymentConfirmation
+          const modalContent = document.querySelector('#paymentModal .modal > div');
+          for (const child of modalContent.children) {
+            if (child.id !== 'paymentConfirmation') {
+              child.style.display = 'none';
+            }
+          }
+          document.getElementById('paymentConfirmation').style.display = 'block';
+
+        } catch (error) {
+          console.error('Error creating payment:', error);
+          alert('Error al registrar el pago. Intenta de nuevo.');
+          confirmBtn.disabled = false;
+          confirmBtn.innerHTML = '<i class="fas fa-check-circle"></i> Pago Efectuado';
+        }
+      });
+
+      // Reset modal state when closed
+      document.querySelector('#paymentModal .modal-close').addEventListener('click', () => {
+        resetPaymentModal();
+      });
+      document.getElementById('paymentModal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('paymentModal')) {
+          resetPaymentModal();
+        }
+      });
+
+      function resetPaymentModal() {
+        // Clear countdown interval
+        if (paymentCountdownInterval) {
+          clearInterval(paymentCountdownInterval);
+          paymentCountdownInterval = null;
+        }
+        const modalContent = document.querySelector('#paymentModal .modal > div');
+        for (const child of modalContent.children) {
+          if (child.id !== 'paymentConfirmation') {
+            child.style.display = '';
+          }
+        }
+        document.getElementById('paymentConfirmation').style.display = 'none';
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<i class="fas fa-check-circle"></i> Pago Efectuado';
+        confirmBtn.style.background = 'rgba(255,255,255,0.1)';
+        confirmBtn.style.color = 'var(--text-dim)';
+        confirmBtn.style.cursor = 'not-allowed';
+        hintEl.textContent = 'Envía el comprobante por WhatsApp y luego haz clic en "Pago Efectuado"';
+        window.pendingPaymentData = null;
+      }
+
+      // Wait up to 3s for auth to be ready, then attach
+      if (AuthManager.currentUser !== null) {
+        attachBuyHandler();
+      } else {
+        let waited = 0;
+        const checkAuth = setInterval(() => {
+          waited += 100;
+          if (AuthManager.currentUser !== null || waited >= 3000) {
+            clearInterval(checkAuth);
+            attachBuyHandler();
+          }
+        }, 100);
+      }
+    }
+
+    // Update navbar based on auth state
+    AuthManager.onAuthChange((user, userData) => {
+      const navCta = document.querySelector('.nav-cta');
+      if (user) {
+        navCta.textContent = 'Mi Panel';
+        navCta.href = 'dashboard.html';
+        if (userData?.role === 'admin' || userData?.role === 'instructor') {
+          const adminLink = document.createElement('li');
+          adminLink.innerHTML = '<a href="admin.html" class="nav-cta" style="background:var(--accent-2);">Admin</a>';
+          navCta.closest('ul').insertBefore(adminLink, navCta.closest('li'));
+        }
+      }
+    });
+
+    loadCourse();
+  </script>
+</body>
+</html>

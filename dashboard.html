@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Panel | Liberland Academy</title>
+  <meta name="description" content="Panel de estudiante Liberland - Accede a tus cursos y progreso.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Dashboard Styles -->
+  <style>
+    .dashboard {
+      display: flex;
+      min-height: 100vh;
+      padding-top: 70px;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: var(--secondary);
+      border-right: 1px solid var(--glass-border);
+      padding: 2rem 0;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+    }
+    
+    .sidebar-header {
+      padding: 0 1.5rem 2rem;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #000;
+      font-size: 1.2rem;
+    }
+    
+    .user-details h3 {
+      font-size: 1rem;
+      margin-bottom: 0.2rem;
+    }
+    
+    .user-details p {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+    
+    .sidebar-nav {
+      padding: 1.5rem 0;
+    }
+    
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 1rem 1.5rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    
+    .sidebar-nav a:hover {
+      background: var(--glass);
+      color: var(--text);
+    }
+    
+    .sidebar-nav a.active {
+      background: rgba(252, 210, 5, 0.15);
+      color: var(--accent);
+      border-right: 3px solid var(--accent);
+    }
+    
+    .sidebar-nav a i {
+      width: 20px;
+      text-align: center;
+    }
+    
+    .sidebar-nav .divider {
+      height: 1px;
+      background: var(--glass-border);
+      margin: 1rem 1.5rem;
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: 280px;
+      padding: 2rem;
+      max-width: calc(100% - 280px);
+    }
+    
+    .page-header {
+      margin-bottom: 2rem;
+    }
+    
+    .page-header h1 {
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .page-header p {
+      color: var(--text-muted);
+    }
+    
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+    
+    .stat-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    
+    .stat-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    
+    .stat-icon.green {
+      background: rgba(252, 210, 5, 0.15);
+      color: var(--accent);
+    }
+    
+    .stat-icon.purple {
+      background: rgba(255, 215, 0, 0.1);
+      color: var(--accent-2);
+    }
+    
+    .stat-icon.blue {
+      background: rgba(248, 156, 14, 0.15);
+      color: var(--accent-2);
+    }
+    
+    .stat-icon.gold {
+      background: rgba(255, 215, 0, 0.1);
+      color: #ffd700;
+    }
+    
+    .stat-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    
+    /* My Courses */
+    .my-courses {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .section-header h2 {
+      font-size: 1.25rem;
+    }
+    
+    .section-header a {
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+    
+    .courses-list {
+      display: grid;
+      gap: 1rem;
+    }
+    
+    .course-item {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+      transition: var(--transition);
+    }
+    
+    .course-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .course-thumb {
+      width: 120px;
+      height: 80px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--secondary);
+    }
+    
+    .course-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .course-details h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .course-details p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      margin-bottom: 0.75rem;
+    }
+    
+    .course-progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .progress-bar {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: var(--gradient);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+    
+    .progress-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      min-width: 40px;
+    }
+    
+    .course-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .btn-continue {
+      background: var(--gradient);
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+    }
+    
+    .btn-continue:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(252, 210, 5, 0.3);
+    }
+    
+    /* Recent Activity */
+    .recent-activity {
+      margin-top: 2rem;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+    }
+    
+    .activity-list {
+      list-style: none;
+    }
+    
+    .activity-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+    
+    .activity-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(252, 210, 5, 0.15);
+      color: var(--accent);
+    }
+    
+    .activity-content {
+      flex: 1;
+    }
+    
+    .activity-content p {
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    
+    .activity-content span {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+    
+    /* Mobile Sidebar Toggle */
+    .sidebar-toggle {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      width: 50px;
+      height: 50px;
+      background: var(--gradient);
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 100;
+      box-shadow: var(--shadow-glow);
+    }
+
+    /* Dashboard sections - tab switching */
+    .dashboard-section { display: none; }
+    .dashboard-section.active { display: block; }
+
+    /* Settings form */
+    .settings-card {
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 1.5rem;
+    }
+    .settings-card h3 { margin-bottom: 1.5rem; font-size: 1.15rem; }
+    .settings-card .form-group { margin-bottom: 1.25rem; }
+    .settings-card label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem; }
+    .settings-card input {
+      width: 100%; padding: 12px 16px; background: var(--glass); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 0.95rem;
+    }
+    .settings-card input:focus { outline: none; border-color: var(--accent); }
+
+    /* Certificates */
+    .cert-card {
+      display: flex; align-items: center; gap: 1.5rem; padding: 1.25rem;
+      background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 1rem;
+      border: 1px solid var(--glass-border);
+    }
+    .cert-icon {
+      width: 60px; height: 60px; border-radius: 12px; display: flex;
+      align-items: center; justify-content: center; font-size: 1.5rem;
+      background: rgba(252,210,5,0.15); color: var(--accent); flex-shrink: 0;
+    }
+    .cert-info { flex: 1; }
+    .cert-info h3 { font-size: 1.05rem; margin-bottom: 0.25rem; }
+    .cert-info p { font-size: 0.85rem; color: var(--text-dim); }
+    .cert-date { font-size: 0.8rem; color: var(--text-dim); }
+    .btn-cert {
+      background: var(--glass); border: 1px solid var(--accent); color: var(--accent);
+      padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem;
+      font-weight: 600; transition: var(--transition); white-space: nowrap;
+    }
+    .btn-cert:hover { background: rgba(252,210,5,0.15); }
+
+    /* Payments */
+    .payments-table {
+      width: 100%; border-collapse: collapse;
+    }
+    .payments-table th {
+      text-align: left; padding: 1rem; background: rgba(255,255,255,0.03);
+      font-weight: 600; font-size: 0.85rem; text-transform: uppercase;
+      letter-spacing: 0.5px; color: var(--text-muted);
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .payments-table td {
+      padding: 1rem; border-bottom: 1px solid var(--glass-border); font-size: 0.95rem;
+    }
+    .payments-table tr:last-child td { border-bottom: none; }
+    .status-badge {
+      padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600;
+    }
+    .status-paid { background: rgba(34,197,94,0.15); color: #22c55e; }
+    .status-pending { background: rgba(251,191,36,0.15); color: #fbbf24; }
+
+    /* Wishlist */
+    .wishlist-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;
+    }
+    .wishlist-card {
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: var(--radius); overflow: hidden; transition: var(--transition);
+    }
+    .wishlist-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .wishlist-card img { width: 100%; height: 160px; object-fit: cover; }
+    .wishlist-card-body { padding: 1rem; }
+    .wishlist-card-body h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+    .wishlist-card-body .price { color: var(--accent); font-weight: 700; font-size: 1.1rem; }
+    .wishlist-remove {
+      background: none; border: none; color: var(--text-dim); cursor: pointer;
+      font-size: 0.85rem; margin-top: 0.5rem; padding: 0;
+    }
+    .wishlist-remove:hover { color: #ef4444; }
+
+    /* FAQ */
+    .faq-item {
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: 12px; margin-bottom: 0.75rem; overflow: hidden;
+    }
+    .faq-question {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem; cursor: pointer; font-weight: 600; transition: var(--transition);
+    }
+    .faq-question:hover { background: rgba(255,255,255,0.03); }
+    .faq-question i { color: var(--text-dim); transition: var(--transition); }
+    .faq-item.open .faq-question i { transform: rotate(180deg); }
+    .faq-answer {
+      display: none; padding: 0 1.25rem 1.25rem; color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .faq-item.open .faq-answer { display: block; }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center; padding: 4rem 2rem; color: var(--text-muted);
+    }
+    .empty-state i { font-size: 3rem; color: var(--accent); margin-bottom: 1rem; display: block; }
+    .empty-state p { margin-bottom: 1rem; }
+    
+    @media (max-width: 1200px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: var(--transition);
+        z-index: 99;
+      }
+      
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+        max-width: 100%;
+      }
+      
+      .sidebar-toggle {
+        display: flex;
+      }
+      
+      .course-item {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .course-thumb {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .course-actions {
+        flex-direction: row;
+      }
+    }
+  </style>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/Liberland_logo.png">
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <img src="images/Liberland_logo.png" alt="Liberland Logo">
+        <span class="logo-text">Liberland Academy</span>
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="index.html#courses">Cursos</a></li>
+        <li><a href="dashboard.html" class="active">Mi Panel</a></li>
+        <li><a href="#" class="nav-cta" id="logoutBtn">Cerrar Sesión</a></li>
+      </ul>
+      
+      <div class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== DASHBOARD ==================== -->
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="user-info">
+          <div class="user-avatar">U</div>
+          <div class="user-details">
+            <h3>Usuario</h3>
+            <p>Cargando...</p>
+          </div>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="#overview" class="active" data-section="overview">
+          <i class="fas fa-th-large"></i> Resumen
+        </a>
+        <a href="#my-courses" data-section="my-courses">
+          <i class="fas fa-graduation-cap"></i> Mis Cursos
+        </a>
+        <a href="#certificates" data-section="certificates">
+          <i class="fas fa-certificate"></i> Certificados
+        </a>
+        <a href="#payments" data-section="payments">
+          <i class="fas fa-credit-card"></i> Pagos
+        </a>
+        <a href="#wishlist" data-section="wishlist">
+          <i class="fas fa-heart"></i> Lista de Deseos
+        </a>
+        <div class="divider"></div>
+        <a href="#settings" data-section="settings">
+          <i class="fas fa-cog"></i> Configuración
+        </a>
+        <a href="#help" data-section="help">
+          <i class="fas fa-question-circle"></i> Ayuda
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- ========== OVERVIEW ========== -->
+      <div class="dashboard-section active" id="section-overview">
+        <div class="page-header">
+          <h1>Bienvenido de nuevo 👋</h1>
+          <p>Continúa donde lo dejaste o explora nuevos cursos</p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-header"><div class="stat-icon green"><i class="fas fa-graduation-cap"></i></div></div>
+            <div class="stat-value" id="stat-courses">0</div>
+            <div class="stat-label">Cursos Inscritos</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><div class="stat-icon purple"><i class="fas fa-clock"></i></div></div>
+            <div class="stat-value" id="stat-hours">0h</div>
+            <div class="stat-label">Tiempo de Estudio</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><div class="stat-icon blue"><i class="fas fa-check-circle"></i></div></div>
+            <div class="stat-value" id="stat-completed">0</div>
+            <div class="stat-label">Cursos Completados</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><div class="stat-icon gold"><i class="fas fa-certificate"></i></div></div>
+            <div class="stat-value" id="stat-certificates">0</div>
+            <div class="stat-label">Certificados</div>
+          </div>
+        </div>
+
+        <div class="my-courses">
+          <div class="section-header">
+            <h2>Mis Cursos en Progreso</h2>
+            <a href="index.html#courses">Explorar más →</a>
+          </div>
+          <div class="courses-list">
+            <div style="text-align:center;padding:2rem;color:var(--text-muted);">
+              <i class="fas fa-spinner fa-spin" style="font-size:1.5rem;color:var(--accent);"></i>
+              <p style="margin-top:0.5rem;">Cargando cursos...</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="recent-activity">
+          <div class="section-header"><h2>Actividad Reciente</h2></div>
+          <ul class="activity-list" id="activityList"></ul>
+        </div>
+      </div>
+
+      <!-- ========== MIS CURSOS ========== -->
+      <div class="dashboard-section" id="section-my-courses">
+        <div class="page-header">
+          <h1>Mis Cursos</h1>
+          <p>Todos tus cursos inscritos</p>
+        </div>
+        <div class="my-courses">
+          <div class="courses-list" id="allCoursesList"></div>
+        </div>
+      </div>
+
+      <!-- ========== CERTIFICADOS ========== -->
+      <div class="dashboard-section" id="section-certificates">
+        <div class="page-header">
+          <h1>Mis Certificados</h1>
+          <p>Certificados de cursos completados</p>
+        </div>
+        <div id="certificatesList"></div>
+      </div>
+
+      <!-- ========== PAGOS ========== -->
+      <div class="dashboard-section" id="section-payments">
+        <div class="page-header">
+          <h1>Mis Pagos</h1>
+          <p>Historial de transacciones</p>
+        </div>
+        <div class="my-courses" style="overflow-x:auto;">
+          <table class="payments-table" id="paymentsTable">
+            <thead>
+              <tr><th>Fecha</th><th>Curso</th><th>Monto</th><th>Estado</th></tr>
+            </thead>
+            <tbody id="paymentsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ========== LISTA DE DESEOS ========== -->
+      <div class="dashboard-section" id="section-wishlist">
+        <div class="page-header">
+          <h1>Lista de Deseos</h1>
+          <p>Cursos que te gustaría tomar</p>
+        </div>
+        <div class="wishlist-grid" id="wishlistGrid"></div>
+      </div>
+
+      <!-- ========== CONFIGURACION ========== -->
+      <div class="dashboard-section" id="section-settings">
+        <div class="page-header">
+          <h1>Configuración</h1>
+          <p>Administra tu cuenta</p>
+        </div>
+        <div class="settings-card">
+          <h3><i class="fas fa-user" style="color:var(--accent);margin-right:8px;"></i> Información Personal</h3>
+          <form id="profileForm">
+            <div class="form-group">
+              <label>Nombre completo</label>
+              <input type="text" id="settingsName" placeholder="Tu nombre">
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="settingsEmail" disabled style="opacity:0.5;">
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Cambios</button>
+          </form>
+        </div>
+        <div class="settings-card">
+          <h3><i class="fas fa-lock" style="color:var(--accent);margin-right:8px;"></i> Cambiar Contraseña</h3>
+          <form id="passwordForm">
+            <div class="form-group">
+              <label>Nueva contraseña</label>
+              <input type="password" id="newPassword" placeholder="Mínimo 8 caracteres" minlength="8">
+            </div>
+            <div class="form-group">
+              <label>Confirmar contraseña</label>
+              <input type="password" id="confirmNewPassword" placeholder="Repite la contraseña">
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-key"></i> Actualizar Contraseña</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ========== AYUDA ========== -->
+      <div class="dashboard-section" id="section-help">
+        <div class="page-header">
+          <h1>Ayuda</h1>
+          <p>Preguntas frecuentes y soporte</p>
+        </div>
+        <div id="faqList">
+          <div class="faq-item open">
+            <div class="faq-question">¿Cómo accedo a mis cursos? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Ve a "Mis Cursos" en el menú lateral. Ahí verás todos los cursos en los que estás inscrito con su progreso. Haz clic en "Continuar" para seguir donde lo dejaste.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">¿Cómo obtengo mi certificado? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Cuando completas un 100% de un curso, tu certificado se genera automáticamente. Ve a "Certificados" en el menú lateral para descargarlo.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">¿Puedo pagar con transferencia bancaria? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Sí, aceptamos transferencias bancarias y pagos por QR. Escríbenos por WhatsApp al +591 72209148 con tu comprobante de pago y te activamos el acceso.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">¿Los cursos tienen fecha de expiración? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">No, todos los cursos tienen acceso de por vida. Puedes verlos las veces que quieras, cuando quieras.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">¿Cómo contacto soporte? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Puedes escribirnos por WhatsApp al +591 72209148 o por email a liberland.bo@gmail.com. Respondemos en menos de 24 horas.</div>
+          </div>
+        </div>
+        <div style="margin-top:2rem;">
+          <h3 style="margin-bottom:1rem;">¿Necesitas más ayuda?</h3>
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+            <a href="https://wa.me/59172209148" target="_blank" class="btn btn-primary" style="text-decoration:none;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <a href="mailto:liberland.bo@gmail.com" class="btn btn-secondary" style="text-decoration:none;"><i class="fas fa-envelope"></i> Email</a>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+  
+  <!-- Mobile Sidebar Toggle -->
+  <button class="sidebar-toggle" id="sidebarToggle">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    let currentUser = null;
+    let currentUserData = null;
+    let allEnrollments = [];
+
+    // Auth guard
+    AuthManager.onAuthChange((user, userData) => {
+      if (!user) { window.location.href = 'login.html'; return; }
+      currentUser = user;
+      currentUserData = userData;
+      loadDashboard(user, userData);
+    });
+
+    // ===== SIDEBAR TAB SWITCHING =====
+    document.querySelectorAll('.sidebar-nav a[data-section]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const section = link.dataset.section;
+        document.querySelectorAll('.sidebar-nav a').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
+        document.getElementById('section-' + section).classList.add('active');
+        if (section === 'my-courses') loadAllCourses();
+        if (section === 'certificates') loadCertificates();
+        if (section === 'payments') loadPayments();
+        if (section === 'wishlist') loadWishlist();
+        if (section === 'settings') loadSettings();
+        sidebar.classList.remove('active');
+      });
+    });
+
+    // ===== LOAD DASHBOARD =====
+    async function loadDashboard(user, userData) {
+      const name = userData?.name || user.displayName || user.email.split('@')[0];
+      const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+      const role = userData?.role || 'student';
+
+      document.querySelector('.user-avatar').textContent = initials;
+      document.querySelector('.user-details h3').textContent = name;
+      document.querySelector('.user-details p').textContent =
+        role === 'admin' ? 'Administrador' : role === 'instructor' ? 'Instructor' : 'Estudiante';
+      document.querySelector('.page-header h1').textContent = `Bienvenido de nuevo, ${name.split(' ')[0]} 👋`;
+
+      if (role === 'admin' || role === 'instructor') {
+        const adminLink = document.createElement('a');
+        adminLink.href = 'admin.html';
+        adminLink.innerHTML = '<i class="fas fa-cog"></i> Admin Panel';
+        document.querySelector('.sidebar-nav .divider').insertAdjacentElement('afterend', adminLink);
+      }
+
+      try {
+        allEnrollments = await window.fb.getUserEnrollments(user.uid);
+        const coursesList = document.querySelector('.courses-list');
+        coursesList.innerHTML = '';
+
+        if (allEnrollments.length === 0) {
+          coursesList.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-graduation-cap"></i>
+              <p>Aún no estás inscrito en ningún curso</p>
+              <a href="index.html#courses" class="btn btn-primary" style="display:inline-flex;"><i class="fas fa-search"></i> Explorar Cursos</a>
+            </div>`;
+          return;
+        }
+
+        let completedCourses = 0;
+        for (const enrollment of allEnrollments) {
+          const course = await window.fb.getCourse(enrollment.courseId);
+          if (!course) continue;
+          const progress = enrollment.progress || 0;
+          if (progress >= 100) completedCourses++;
+
+          const courseItem = document.createElement('div');
+          courseItem.className = 'course-item';
+          courseItem.innerHTML = `
+            <div class="course-thumb"><img src="${course.image || 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=200&h=140&fit=crop'}" alt="${course.title}"></div>
+            <div class="course-details">
+              <h3>${course.title}</h3>
+              <p>${course.category || 'Curso'}</p>
+              <div class="course-progress">
+                <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+                <span class="progress-text">${progress}%</span>
+              </div>
+            </div>
+            <div class="course-actions">
+              <a href="course.html?id=${course.id}" class="btn-continue"><i class="fas fa-play"></i> Continuar</a>
+            </div>`;
+          coursesList.appendChild(courseItem);
+        }
+
+        document.getElementById('stat-courses').textContent = allEnrollments.length;
+        document.getElementById('stat-completed').textContent = completedCourses;
+        document.getElementById('stat-certificates').textContent = completedCourses;
+
+        loadActivity(allEnrollments);
+      } catch (error) {
+        console.error('Error loading dashboard:', error);
+      }
+    }
+
+    // ===== ACTIVITY =====
+    function loadActivity(enrollments) {
+      const list = document.getElementById('activityList');
+      if (enrollments.length === 0) {
+        list.innerHTML = '<li style="padding:1rem;color:var(--text-dim);text-align:center;">Sin actividad reciente</li>';
+        return;
+      }
+      const recent = enrollments.slice(-4).reverse();
+      list.innerHTML = recent.map(e => `
+        <li class="activity-item">
+          <div class="activity-icon"><i class="fas fa-${e.progress >= 100 ? 'check-circle' : 'play'}"></i></div>
+          <div class="activity-content">
+            <p>${e.progress >= 100 ? 'Completaste' : 'Estás viendo'} un curso</p>
+            <span>Progreso: ${e.progress || 0}%</span>
+          </div>
+        </li>`).join('');
+    }
+
+    // ===== ALL COURSES =====
+    async function loadAllCourses() {
+      const list = document.getElementById('allCoursesList');
+      if (allEnrollments.length === 0) {
+        list.innerHTML = `<div class="empty-state"><i class="fas fa-graduation-cap"></i><p>No tienes cursos inscritos</p><a href="index.html#courses" class="btn btn-primary" style="display:inline-flex;">Explorar Cursos</a></div>`;
+        return;
+      }
+      list.innerHTML = '';
+      for (const enrollment of allEnrollments) {
+        const course = await window.fb.getCourse(enrollment.courseId);
+        if (!course) continue;
+        const progress = enrollment.progress || 0;
+        const item = document.createElement('div');
+        item.className = 'course-item';
+        item.innerHTML = `
+          <div class="course-thumb"><img src="${course.image || 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=200&h=140&fit=crop'}" alt="${course.title}"></div>
+          <div class="course-details">
+            <h3>${course.title}</h3>
+            <p>${course.category} · ${course.level || 'Intermedio'}</p>
+            <div class="course-progress">
+              <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+              <span class="progress-text">${progress}%</span>
+            </div>
+          </div>
+          <div class="course-actions">
+            <a href="course.html?id=${course.id}" class="btn-continue"><i class="fas fa-play"></i> Continuar</a>
+          </div>`;
+        list.appendChild(item);
+      }
+    }
+
+    // ===== CERTIFICATES =====
+    async function loadCertificates() {
+      const list = document.getElementById('certificatesList');
+      const completed = allEnrollments.filter(e => (e.progress || 0) >= 100);
+      if (completed.length === 0) {
+        list.innerHTML = `<div class="empty-state"><i class="fas fa-certificate"></i><p>Aún no has completado ningún curso</p><p style="font-size:0.9rem;">¡Sigue aprendiendo! Cuando completes un curso, tu certificado aparecerá aquí.</p></div>`;
+        return;
+      }
+      list.innerHTML = '';
+      for (const enrollment of completed) {
+        const course = await window.fb.getCourse(enrollment.courseId);
+        if (!course) continue;
+        const date = enrollment.completedAt?.toDate ? enrollment.completedAt.toDate().toLocaleDateString('es-BO') : 'Reciente';
+        const card = document.createElement('div');
+        card.className = 'cert-card';
+        card.innerHTML = `
+          <div class="cert-icon"><i class="fas fa-award"></i></div>
+          <div class="cert-info">
+            <h3>${course.title}</h3>
+            <p>${course.category} · ${course.instructorName || 'Liberland Academy'}</p>
+            <span class="cert-date">Completado: ${date}</span>
+          </div>
+          <button class="btn-cert" onclick="downloadCertificate('${course.title}', '${course.category}')"><i class="fas fa-download"></i> Descargar</button>`;
+        list.appendChild(card);
+      }
+    }
+
+    function downloadCertificate(title, category) {
+      const name = currentUserData?.name || currentUser?.displayName || 'Estudiante';
+      const date = new Date().toLocaleDateString('es-BO', { year: 'numeric', month: 'long', day: 'numeric' });
+      const certHtml = `<!DOCTYPE html><html><head><style>
+        body{font-family:Georgia,serif;text-align:center;padding:60px 40px;color:#231f20;}
+        .border{border:4px solid #fcd205;padding:50px;max-width:700px;margin:0 auto;}
+        h1{font-size:2.2rem;margin:0 0 10px;color:#231f20;}
+        h2{font-size:1.3rem;color:#f89c0e;margin:0 0 30px;font-weight:normal;}
+        .name{font-size:1.8rem;font-weight:bold;margin:20px 0;border-bottom:2px solid #fcd205;display:inline-block;padding-bottom:5px;}
+        .course{font-size:1.1rem;margin:20px 0;color:#555;}
+        .date{font-size:0.9rem;color:#888;margin-top:30px;}
+        .logo{font-size:1.5rem;font-weight:bold;color:#fcd205;margin-bottom:10px;}
+      </style></head><body>
+        <div class="border">
+          <div class="logo">LIBERLAND ACADEMY</div>
+          <h1>Certificado de Finalización</h1>
+          <h2>Centro de Desarrollo del Talento</h2>
+          <p>Se certifica que</p>
+          <div class="name">${name}</div>
+          <p>ha completado exitosamente el curso</p>
+          <div class="course">"${title}" - ${category}</div>
+          <p class="date">Fecha de emisión: ${date}</p>
+        </div>
+      </body></html>`;
+      const blob = new Blob([certHtml], { type: 'text/html' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `certificado-${title.toLowerCase().replace(/\s+/g, '-')}.html`;
+      a.click();
+    }
+
+    // ===== PAYMENTS =====
+    async function loadPayments() {
+      const tbody = document.getElementById('paymentsBody');
+      tbody.innerHTML = '';
+
+      // Load confirmed enrollments as payments
+      let hasRows = false;
+      for (const enrollment of allEnrollments) {
+        const course = await window.fb.getCourse(enrollment.courseId);
+        if (!course) continue;
+        if (course.priceBs === 0) continue;
+        hasRows = true;
+        const date = enrollment.enrolledAt?.toDate ? enrollment.enrolledAt.toDate().toLocaleDateString('es-BO') : 'N/A';
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${date}</td>
+          <td>${course.title}</td>
+          <td style="font-weight:600;">Bs ${course.priceBs}</td>
+          <td><span class="status-badge status-paid">Pagado</span></td>`;
+        tbody.appendChild(row);
+      }
+
+      // Load pending payments
+      try {
+        const pendingPayments = await window.fb.getUserPendingPayments(currentUser.uid);
+        for (const payment of pendingPayments) {
+          hasRows = true;
+          const date = payment.createdAt ? new Date(payment.createdAt.seconds * 1000).toLocaleDateString('es-BO') : 'N/A';
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${date}</td>
+            <td>${payment.courseTitle || 'Curso'}</td>
+            <td style="font-weight:600;">Bs ${payment.amount || 0}</td>
+            <td><span class="status-badge status-pending">Pendiente de aprobación</span></td>`;
+          tbody.appendChild(row);
+        }
+      } catch (e) {
+        console.warn('Error loading pending payments:', e);
+        if (!hasRows) {
+          tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:1.5rem;color:var(--accent);"><i class="fas fa-info-circle" style="margin-right:8px;"></i>No se pudieron cargar los pagos pendientes. Si realizaste un pago, contacta al admin por WhatsApp.</td></tr>`;
+        }
+      }
+
+      if (!hasRows) {
+        tbody.innerHTML = `<tr><td colspan="4" class="empty-state"><i class="fas fa-credit-card"></i><p>Sin pagos registrados</p></td></tr>`;
+      }
+    }
+
+    // ===== WISHLIST =====
+    async function loadWishlist() {
+      const grid = document.getElementById('wishlistGrid');
+      try {
+        const snap = await db.collection('wishlist').where('userId', '==', currentUser.uid).get();
+        if (snap.empty) {
+          grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-heart"></i><p>Tu lista de deseos está vacía</p><a href="index.html#courses" class="btn btn-primary" style="display:inline-flex;">Explorar Cursos</a></div>`;
+          return;
+        }
+        grid.innerHTML = '';
+        for (const doc of snap.docs) {
+          const data = doc.data();
+          const course = await window.fb.getCourse(data.courseId);
+          if (!course) continue;
+          const card = document.createElement('div');
+          card.className = 'wishlist-card';
+          card.innerHTML = `
+            <img src="${course.image || 'https://via.placeholder.com/400x200'}" alt="${course.title}">
+            <div class="wishlist-card-body">
+              <h3>${course.title}</h3>
+              <span class="price">${course.priceBs === 0 ? 'Gratis' : 'Bs ' + course.priceBs}</span>
+              <br><a href="course.html?id=${course.id}" class="btn-continue" style="display:inline-flex;margin-top:0.75rem;"><i class="fas fa-eye"></i> Ver Curso</a>
+              <button class="wishlist-remove" onclick="removeWishlist('${doc.id}')"><i class="fas fa-trash"></i> Eliminar</button>
+            </div>`;
+          grid.appendChild(card);
+        }
+      } catch (e) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-heart"></i><p>Tu lista de deseos está vacía</p><a href="index.html#courses" class="btn btn-primary" style="display:inline-flex;">Explorar Cursos</a></div>`;
+      }
+    }
+
+    async function removeWishlist(docId) {
+      await db.collection('wishlist').doc(docId).delete();
+      loadWishlist();
+    }
+
+    // ===== SETTINGS =====
+    function loadSettings() {
+      document.getElementById('settingsName').value = currentUserData?.name || '';
+      document.getElementById('settingsEmail').value = currentUser?.email || '';
+    }
+
+    document.getElementById('profileForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('settingsName').value;
+      try {
+        await db.doc('users/' + currentUser.uid).update({ name });
+        currentUserData.name = name;
+        document.querySelector('.user-details h3').textContent = name;
+        document.querySelector('.user-avatar').textContent = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        alert('Perfil actualizado');
+      } catch (e) { alert('Error al actualizar'); }
+    });
+
+    document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const pw = document.getElementById('newPassword').value;
+      const confirm = document.getElementById('confirmNewPassword').value;
+      if (pw !== confirm) { alert('Las contraseñas no coinciden'); return; }
+      try {
+        await currentUser.updatePassword(pw);
+        alert('Contraseña actualizada');
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmNewPassword').value = '';
+      } catch (e) {
+        alert('Error: necesitas volver a iniciar sesión para cambiar contraseña');
+      }
+    });
+
+    // ===== FAQ =====
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
+    });
+
+    // ===== LOGOUT =====
+    document.getElementById('logoutBtn').addEventListener('click', (e) => { e.preventDefault(); AuthManager.logout(); });
+
+    // ===== MOBILE SIDEBAR =====
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    sidebarToggle.addEventListener('click', () => sidebar.classList.toggle('active'));
+    document.addEventListener('click', (e) => {
+      if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) sidebar.classList.remove('active');
+    });
+  </script>
+</body>
+</html>

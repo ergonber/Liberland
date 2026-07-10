@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liberland Academy | Centro de Desarrollo del Talento</title>
+  <meta name="description" content="Cursos prácticos de Blockchain, Seguridad Informática y Forense Digital. Diseñados para jóvenes bolivianos que quieren entrar al mundo tech.">
+  <meta property="og:title" content="Liberland Academy | Centro de Desarrollo del Talento">
+  <meta property="og:description" content="Cursos prácticos de Blockchain, Seguridad Informática y Forense Digital.">
+  <meta property="og:image" content="images/Liberland_logo.png">
+  <meta property="og:type" content="website">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/Liberland_logo.png">
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <img src="images/Liberland_logo.png" alt="Liberland Logo">
+        <span class="logo-text">Liberland Academy</span>
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="#home">Inicio</a></li>
+        <li><a href="#courses">Cursos</a></li>
+        <li><a href="#preview">Preview</a></li>
+        <li><a href="#pricing">Precios</a></li>
+        <li><a href="#contact">Contacto</a></li>
+        <li><a href="login.html" class="nav-cta">Iniciar Sesión</a></li>
+      </ul>
+      
+      <div class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section id="home" class="hero">
+    <canvas id="particles"></canvas>
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-badge">
+          <i class="fas fa-rocket"></i>
+          Centro de Desarrollo del Talento
+        </span>
+        
+        <h1 class="hero-title">
+          Aprende las tecnologías<br>
+          del <span class="gradient-text">futuro</span>
+        </h1>
+        
+        <p class="hero-subtitle">
+          Cursos prácticos de Blockchain, Seguridad Informática y Forense Digital. 
+          Diseñados para jóvenes bolivianos que quieren entrar al mundo tech.
+        </p>
+        
+        <div class="hero-buttons">
+          <a href="#courses" class="btn btn-primary">
+            <i class="fas fa-play-circle"></i>
+            Ver Cursos
+          </a>
+          <a href="#preview" class="btn btn-secondary">
+            <i class="fas fa-film"></i>
+            Preview Gratis
+          </a>
+        </div>
+        
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-number">500+</span>
+            <span class="stat-label">Estudiantes</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">10+</span>
+            <span class="stat-label">Cursos</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">98%</span>
+            <span class="stat-label">Satisfacción</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CATEGORIES ==================== -->
+  <section id="categories" class="section">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-badge">Categorías</span>
+        <h2 class="section-title">¿Qué quieres aprender?</h2>
+        <p class="section-subtitle">Elige la categoría que más te interese y comienza tu camino en el mundo tech</p>
+      </div>
+      
+      <div class="categories-grid">
+        <div class="category-card animate-on-scroll">
+          <div class="category-icon">
+            <i class="fab fa-ethereum"></i>
+          </div>
+          <h3>Blockchain & Web3</h3>
+          <p>Smart contracts, DeFi, NFTs y descentralización</p>
+        </div>
+        
+        <div class="category-card animate-on-scroll">
+          <div class="category-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3>Forense Móvil</h3>
+          <p>Análisis forense de dispositivos móviles</p>
+        </div>
+        
+        <div class="category-card animate-on-scroll">
+          <div class="category-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3>Seguridad Informática</h3>
+          <p>Pentesting, auditoría y protección de sistemas</p>
+        </div>
+        
+        <div class="category-card animate-on-scroll">
+          <div class="category-icon">
+            <i class="fas fa-code"></i>
+          </div>
+          <h3>Desarrollo Web</h3>
+          <p>HTML, CSS, JavaScript y frameworks modernos</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== COURSES ==================== -->
+  <section id="courses" class="section">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-badge">Cursos</span>
+        <h2 class="section-title">Cursos Destacados</h2>
+        <p class="section-subtitle">Aprende con proyectos reales y tutorías personalizadas</p>
+      </div>
+      
+      <div class="courses-grid">
+        <!-- Course 1 -->
+        <div class="course-card animate-on-scroll">
+          <div class="course-image">
+            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600&h=400&fit=crop" alt="Smart Contracts">
+            <span class="course-badge">Nuevo</span>
+            <div class="play-overlay">
+              <i class="fas fa-play-circle"></i>
+            </div>
+          </div>
+          <div class="course-content">
+            <span class="course-category">Blockchain</span>
+            <h3>Smart Contracts con Solidity</h3>
+            <p>Aprende a crear contratos inteligentes en Ethereum desde cero</p>
+            <div class="course-meta">
+              <span><i class="fas fa-clock"></i> 8 horas</span>
+              <span><i class="fas fa-users"></i> 120 estudiantes</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <span class="price-main">Bs 199</span>
+                <span class="price-usd">~$29 USD</span>
+              </div>
+              <a href="course.html?id=1" class="btn-course">Ver Curso</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Course 2 -->
+        <div class="course-card animate-on-scroll">
+          <div class="course-image">
+            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f2?w=600&h=400&fit=crop" alt="Forense Móvil">
+            <span class="course-badge">Popular</span>
+            <div class="play-overlay">
+              <i class="fas fa-play-circle"></i>
+            </div>
+          </div>
+          <div class="course-content">
+            <span class="course-category">Forense</span>
+            <h3>Forense Móvil Android</h3>
+            <p>Análisis forense completo de dispositivos Android</p>
+            <div class="course-meta">
+              <span><i class="fas fa-clock"></i> 12 horas</span>
+              <span><i class="fas fa-users"></i> 85 estudiantes</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <span class="price-main">Bs 299</span>
+                <span class="price-usd">~$43 USD</span>
+              </div>
+              <a href="course.html?id=2" class="btn-course">Ver Curso</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Course 3 -->
+        <div class="course-card animate-on-scroll">
+          <div class="course-image">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&h=400&fit=crop" alt="Seguridad Informática">
+            <div class="play-overlay">
+              <i class="fas fa-play-circle"></i>
+            </div>
+          </div>
+          <div class="course-content">
+            <span class="course-category">Seguridad</span>
+            <h3>Ethical Hacking Práctico</h3>
+            <p>Aprende técnicas de hacking ético y pentesting</p>
+            <div class="course-meta">
+              <span><i class="fas fa-clock"></i> 15 horas</span>
+              <span><i class="fas fa-users"></i> 200 estudiantes</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <span class="price-main">Bs 349</span>
+                <span class="price-usd">~$50 USD</span>
+              </div>
+              <a href="course.html?id=3" class="btn-course">Ver Curso</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Course 4 -->
+        <div class="course-card animate-on-scroll">
+          <div class="course-image">
+            <img src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=600&h=400&fit=crop" alt="DeFi">
+            <span class="course-badge">Gratis</span>
+            <div class="play-overlay">
+              <i class="fas fa-play-circle"></i>
+            </div>
+          </div>
+          <div class="course-content">
+            <span class="course-category">Blockchain</span>
+            <h3>Introducción a DeFi</h3>
+            <p>Conoce el mundo de las finanzas descentralizadas</p>
+            <div class="course-meta">
+              <span><i class="fas fa-clock"></i> 4 horas</span>
+              <span><i class="fas fa-users"></i> 350 estudiantes</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <span class="price-main">Gratis</span>
+                <span class="price-usd">0 Bs</span>
+              </div>
+              <a href="course.html?id=4" class="btn-course">Ver Curso</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Course 5 -->
+        <div class="course-card animate-on-scroll">
+          <div class="course-image">
+            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop" alt="Redes">
+            <div class="play-overlay">
+              <i class="fas fa-play-circle"></i>
+            </div>
+          </div>
+          <div class="course-content">
+            <span class="course-category">Seguridad</span>
+            <h3>Seguridad de Redes</h3>
+            <p>Protege infraestructuras de redes empresariales</p>
+            <div class="course-meta">
+              <span><i class="fas fa-clock"></i> 10 horas</span>
+              <span><i class="fas fa-users"></i> 95 estudiantes</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <span class="price-main">Bs 249</span>
+                <span class="price-usd">~$36 USD</span>
+              </div>
+              <a href="course.html?id=5" class="btn-course">Ver Curso</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Course 6 -->
+        <div class="course-card animate-on-scroll">
+          <div class="course-image">
+            <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=600&h=400&fit=crop" alt="Web3">
+            <span class="course-badge">Próximamente</span>
+            <div class="play-overlay">
+              <i class="fas fa-play-circle"></i>
+            </div>
+          </div>
+          <div class="course-content">
+            <span class="course-category">Web3</span>
+            <h3>Desarrollo DApps</h3>
+            <p>Crea aplicaciones descentralizadas fullstack</p>
+            <div class="course-meta">
+              <span><i class="fas fa-clock"></i> 20 horas</span>
+              <span><i class="fas fa-users"></i> 0 estudiantes</span>
+            </div>
+            <div class="course-footer">
+              <div class="course-price">
+                <span class="price-main">Bs 399</span>
+                <span class="price-usd">~$58 USD</span>
+              </div>
+              <a href="#" class="btn-course">Próximamente</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== VIDEO PREVIEW ==================== -->
+  <section id="preview" class="section">
+    <div class="container">
+      <div class="preview-container">
+        <div class="preview-video animate-on-scroll">
+          <iframe 
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+            title="Preview Gratis - Introducción a Blockchain"
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
+        
+        <div class="preview-content animate-on-scroll">
+          <span class="section-badge">Preview Gratis</span>
+          <h2>Mira el primer módulo gratis</h2>
+          <p>Antes de comprar, revisa el contenido de nuestro curso introductorio. Sin compromiso, sin tarjeta de crédito.</p>
+          
+          <div class="preview-features">
+            <div class="preview-feature">
+              <i class="fas fa-check-circle"></i>
+              <span>Acceso inmediato al primer módulo</span>
+            </div>
+            <div class="preview-feature">
+              <i class="fas fa-check-circle"></i>
+              <span>Sin tarjeta de crédito requerida</span>
+            </div>
+            <div class="preview-feature">
+              <i class="fas fa-check-circle"></i>
+              <span>Contenido en español</span>
+            </div>
+            <div class="preview-feature">
+              <i class="fas fa-check-circle"></i>
+              <span>Proyectos prácticos incluidos</span>
+            </div>
+          </div>
+          
+          <a href="#courses" class="btn btn-primary" style="margin-top: 2rem;">
+            <i class="fas fa-play"></i>
+            Comenzar Ahora
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PRICING ==================== -->
+  <section id="pricing" class="section">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-badge">Precios</span>
+        <h2 class="section-title">Elige tu plan</h2>
+        <p class="section-subtitle">Acceso lifetime a los cursos que compres. Sin suscripciones, sin sorpresas.</p>
+      </div>
+      
+      <div class="pricing-grid">
+        <!-- Plan Gratis -->
+        <div class="pricing-card animate-on-scroll">
+          <div class="pricing-icon">
+            <i class="fas fa-gift"></i>
+          </div>
+          <h3>Gratis</h3>
+          <div class="pricing-amount">
+            <span class="currency">Bs</span>0
+          </div>
+          <p class="pricing-period">Para siempre</p>
+          
+          <ul class="pricing-features">
+            <li><i class="fas fa-check"></i> 1 curso introductorio</li>
+            <li><i class="fas fa-check"></i> Acceso a preview de cursos</li>
+            <li><i class="fas fa-check"></i> Comunidad de estudiantes</li>
+            <li class="disabled"><i class="fas fa-times"></i> Certificado</li>
+            <li class="disabled"><i class="fas fa-times"></i> Mentoría</li>
+          </ul>
+          
+          <a href="register.html" class="btn btn-ghost btn-pricing">Empezar Gratis</a>
+        </div>
+        
+        <!-- Plan Cursos -->
+        <div class="pricing-card featured animate-on-scroll">
+          <div class="pricing-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <h3>Cursos Individuales</h3>
+          <div class="pricing-amount">
+            <span class="currency">Bs</span>199+
+          </div>
+          <p class="pricing-period">Pago único · Acceso lifetime</p>
+          
+          <ul class="pricing-features">
+            <li><i class="fas fa-check"></i> Acceso al curso comprado</li>
+            <li><i class="fas fa-check"></i> Actualizaciones incluidas</li>
+            <li><i class="fas fa-check"></i> Certificado de finalización</li>
+            <li><i class="fas fa-check"></i> Soporte por WhatsApp</li>
+            <li class="disabled"><i class="fas fa-times"></i> Mentoría 1:1</li>
+          </ul>
+          
+          <a href="#courses" class="btn btn-primary btn-pricing">Ver Cursos</a>
+        </div>
+        
+        <!-- Plan Premium -->
+        <div class="pricing-card animate-on-scroll">
+          <div class="pricing-icon">
+            <i class="fas fa-crown"></i>
+          </div>
+          <h3>Premium</h3>
+          <div class="pricing-amount">
+            <span class="currency">Bs</span>999
+          </div>
+          <p class="pricing-period">Pago único · Acceso lifetime</p>
+          
+          <ul class="pricing-features">
+            <li><i class="fas fa-check"></i> Todos los cursos actuales</li>
+            <li><i class="fas fa-check"></i> Todos los cursos futuros</li>
+            <li><i class="fas fa-check"></i> Certificados verificados</li>
+            <li><i class="fas fa-check"></i> Mentoría 1:1 mensual</li>
+            <li><i class="fas fa-check"></i> Acceso anticipado</li>
+          </ul>
+          
+          <a href="register.html" class="btn btn-ghost btn-pricing">Obtener Premium</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TESTIMONIALS ==================== -->
+  <section id="testimonials" class="section">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-badge">Testimonios</span>
+        <h2 class="section-title">Lo que dicen nuestros estudiantes</h2>
+        <p class="section-subtitle">Historias reales de personas que transformaron su carrera</p>
+      </div>
+      
+      <div class="testimonials-grid">
+        <div class="testimonial-card animate-on-scroll">
+          <div class="testimonial-stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">
+            "Los cursos de Liberland me ayudaron a entender blockchain de forma práctica. Ahora trabajo como desarrollador Solidity en una empresa internacional."
+          </p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">CR</div>
+            <div class="testimonial-info">
+              <h4>Carlos Ramírez</h4>
+              <p>Desarrollador Blockchain</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-card animate-on-scroll">
+          <div class="testimonial-stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">
+            "El curso de forense móvil me dio las habilidades que necesitaba. Ahora hago consultoría para empresas de seguridad. ¡Totalmente recomendado!"
+          </p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">ML</div>
+            <div class="testimonial-info">
+              <h4>María López</h4>
+              <p>Analista Forense</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-card animate-on-scroll">
+          <div class="testimonial-stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+          </div>
+          <p class="testimonial-text">
+            "La mentoría personalizada marcó la diferencia. No solo aprendí tecnología, sino también cómo aplicarla en proyectos reales."
+          </p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">JV</div>
+            <div class="testimonial-info">
+              <h4>Jorge Vargas</h4>
+              <p>Emprendedor Tech</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CONTACT ==================== -->
+  <section id="contact" class="section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info animate-on-scroll">
+          <span class="section-badge">Contacto</span>
+          <h2>¿Tienes preguntas?</h2>
+          <p style="color: var(--text-muted); margin-bottom: 2rem;">
+            Escríbenos y te responderemos en menos de 24 horas. 
+            También puedes contactarnos por WhatsApp.
+          </p>
+          
+          <a href="https://wa.me/59172209148" target="_blank" class="contact-item" style="text-decoration: none; color: inherit;">
+            <div class="contact-icon">
+              <i class="fab fa-whatsapp"></i>
+            </div>
+            <div>
+              <h4>WhatsApp</h4>
+              <p>Chatea con nuestro bot</p>
+            </div>
+          </a>
+          
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div>
+              <h4>Email</h4>
+              <p>liberland.bo@gmail.com</p>
+            </div>
+          </div>
+          
+          <div class="social-links" style="margin-top: 2rem;">
+            <a href="https://www.facebook.com/p/Liberland-Bolivia-61564945167919/" class="social-link"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+        
+        <div class="contact-form animate-on-scroll">
+          <form id="contactForm">
+            <div class="form-group">
+              <label for="name">Nombre completo</label>
+              <input type="text" id="name" name="name" class="form-input" placeholder="Tu nombre" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" class="form-input" placeholder="tu@email.com" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="subject">Asunto</label>
+              <input type="text" id="subject" name="subject" class="form-input" placeholder="¿En qué podemos ayudarte?">
+            </div>
+            
+            <div class="form-group">
+              <label for="message">Mensaje</label>
+              <textarea id="message" name="message" class="form-input" placeholder="Escribe tu mensaje aquí..." required></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+              <i class="fas fa-paper-plane"></i>
+              Enviar Mensaje
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <img src="images/Liberland_logo.png" alt="Liberland Logo">
+            <span class="logo-text">Liberland Academy</span>
+          </a>
+          <p>Cursos prácticos de tecnología para jóvenes bolivianos. Aprende blockchain, seguridad informática y desarrollo web.</p>
+          <div class="social-links">
+            <a href="https://www.facebook.com/p/Liberland-Bolivia-61564945167919/" class="social-link" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            <a href="https://wa.me/59172209148" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4>Cursos</h4>
+          <ul class="footer-links">
+            <li><a href="#courses">Blockchain</a></li>
+            <li><a href="#courses">Forense Móvil</a></li>
+            <li><a href="#courses">Seguridad Info</a></li>
+            <li><a href="#courses">Desarrollo Web</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-col">
+          <h4>Academia</h4>
+          <ul class="footer-links">
+            <li><a href="#pricing">Precios</a></li>
+            <li><a href="#testimonials">Testimonios</a></li>
+            <li><a href="dashboard.html#help">FAQ</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="terms.html">Términos de Uso</a></li>
+            <li><a href="privacy.html">Política de Privacidad</a></li>
+            <li><a href="refund.html">Política de Reembolso</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 Liberland Academy - Centro de Desarrollo del Talento. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Update navbar based on auth state
+    AuthManager.onAuthChange((user, userData) => {
+      const navCta = document.querySelector('.nav-cta');
+      if (user) {
+        navCta.textContent = 'Mi Panel';
+        navCta.href = 'dashboard.html';
+        if (userData?.role === 'admin' || userData?.role === 'instructor') {
+          const adminLink = document.createElement('li');
+          adminLink.innerHTML = '<a href="admin.html" class="nav-cta" style="background:var(--accent-2);">Admin</a>';
+          navCta.closest('ul').insertBefore(adminLink, navCta.closest('li'));
+        }
+      }
+    });
+
+    // Global sale countdown interval
+    let saleBannerInterval = null;
+
+    // Load courses from Firestore
+    async function loadCoursesFromFirestore() {
+      const coursesGrid = document.querySelector('.courses-grid');
+      try {
+        const [courses, saleConfig] = await Promise.all([
+          window.fb.getCourses(true),
+          window.fb.getSaleConfig()
+        ]);
+        if (courses.length === 0) return; // Keep static courses if no Firestore data
+
+        // Check if sale is active and not expired
+        let saleActive = false;
+        let saleEndTime = null;
+        if (saleConfig.active && saleConfig.endTime) {
+          const endDate = saleConfig.endTime.toDate ? saleConfig.endTime.toDate() : new Date(saleConfig.endTime);
+          if (endDate > new Date()) {
+            saleActive = true;
+            saleEndTime = endDate;
+          }
+        }
+
+        // Add sale banner above courses grid
+        const existingBanner = document.getElementById('saleBanner');
+        if (existingBanner) existingBanner.remove();
+        if (saleBannerInterval) clearInterval(saleBannerInterval);
+
+        if (saleActive) {
+          const banner = document.createElement('div');
+          banner.id = 'saleBanner';
+          banner.style.cssText = 'background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(239,68,68,0.05));border:1px solid rgba(239,68,68,0.3);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;text-align:center;';
+          banner.innerHTML = `
+            <div style="font-size:1.1rem;font-weight:700;color:#ef4444;margin-bottom:0.5rem;">
+              <i class="fas fa-fire" style="margin-right:8px;"></i>OFERTA ESPECIAL - Todos los cursos a Bs ${saleConfig.salePrice || 99}
+            </div>
+            <div id="saleBannerCountdown" class="countdown"></div>
+          `;
+          coursesGrid.parentElement.insertBefore(banner, coursesGrid);
+
+          // Start countdown
+          function updateBannerCountdown() {
+            const now = new Date();
+            const diff = saleEndTime - now;
+            if (diff <= 0) {
+              clearInterval(saleBannerInterval);
+              banner.innerHTML = '<div style="font-size:1rem;color:var(--text-dim);">La oferta ha expirado</div>';
+              saleActive = false;
+              renderCourseCards(courses, false, 0);
+              return;
+            }
+            const hours = Math.floor(diff / 3600000);
+            const minutes = Math.floor((diff % 3600000) / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+            document.getElementById('saleBannerCountdown').innerHTML = `
+              <div class="countdown-unit"><span class="value">${String(hours).padStart(2, '0')}</span><span class="label">hs</span></div>
+              <div class="countdown-unit"><span class="value">${String(minutes).padStart(2, '0')}</span><span class="label">min</span></div>
+              <div class="countdown-unit"><span class="value">${String(seconds).padStart(2, '0')}</span><span class="label">seg</span></div>
+            `;
+          }
+          updateBannerCountdown();
+          saleBannerInterval = setInterval(updateBannerCountdown, 1000);
+        }
+
+        renderCourseCards(courses, saleActive, saleConfig.salePrice || 99);
+
+        // Make dynamically loaded cards visible
+        requestAnimationFrame(() => {
+          coursesGrid.querySelectorAll('.animate-on-scroll').forEach(el => {
+            el.classList.add('animated');
+          });
+        });
+      } catch (error) {
+        console.log('Keeping static courses (Firestore not configured)');
+      }
+    }
+
+    function renderCourseCards(courses, saleActive, salePrice) {
+      const coursesGrid = document.querySelector('.courses-grid');
+      coursesGrid.innerHTML = courses.map(course => {
+        const badgeHtml = saleActive && course.priceBs > 0
+          ? '<span class="sale-badge">OFERTA</span>'
+          : (course.badge ? `<span class="course-badge">${course.badge}</span>` : '');
+
+        let priceHtml;
+        if (course.priceBs === 0) {
+          priceHtml = '<span class="price-main">Gratis</span><span class="price-usd">0 Bs</span>';
+        } else if (saleActive && course.priceBs > 0) {
+          priceHtml = `<div class="price-sale">
+            <span class="price-original">Bs ${course.priceBs}</span>
+            <span class="price-current">Bs ${salePrice}</span>
+          </div>`;
+        } else {
+          priceHtml = `<span class="price-main">Bs ${course.priceBs}</span><span class="price-usd">~$${course.priceUsd} USD</span>`;
+        }
+
+        const btnHtml = course.published === false
+          ? '<a href="#" class="btn-course">Próximamente</a>'
+          : `<a href="course.html?id=${course.id}" class="btn-course">Ver Curso</a>`;
+
+        return `
+          <div class="course-card animate-on-scroll">
+            <div class="course-image">
+              <img src="${course.image || 'https://via.placeholder.com/600x400'}" alt="${course.title}">
+              ${badgeHtml}
+              <div class="play-overlay"><i class="fas fa-play-circle"></i></div>
+            </div>
+            <div class="course-content">
+              <span class="course-category">${course.category}</span>
+              <h3>${course.title}</h3>
+              <p>${course.description}</p>
+              <div class="course-meta">
+                <span><i class="fas fa-clock"></i> ${course.duration}</span>
+                <span><i class="fas fa-users"></i> ${course.students || 0} estudiantes</span>
+              </div>
+              <div class="course-footer">
+                <div class="course-price">${priceHtml}</div>
+                ${btnHtml}
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', loadCoursesFromFirestore);
+  </script>
+</body>
+</html>

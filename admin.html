@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | Liberland Academy</title>
+  <meta name="description" content="Panel de administración de Liberland">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/Liberland_logo.png">
+  <style>
+    .admin-page { display: flex; min-height: 100vh; padding-top: 70px; }
+    .admin-sidebar {
+      width: 260px; background: var(--secondary); border-right: 1px solid var(--glass-border);
+      padding: 2rem 0; position: fixed; top: 70px; left: 0; bottom: 0; overflow-y: auto;
+    }
+    .admin-sidebar-header { padding: 0 1.5rem 2rem; border-bottom: 1px solid var(--glass-border); }
+    .admin-nav { padding: 1.5rem 0; }
+    .admin-nav a {
+      display: flex; align-items: center; gap: 12px; padding: 0.9rem 1.5rem;
+      color: var(--text-muted); font-weight: 500; transition: var(--transition); cursor: pointer;
+    }
+    .admin-nav a:hover { background: var(--glass); color: var(--text); }
+    .admin-nav a.active { background: rgba(252, 210, 5, 0.15); color: var(--accent); border-right: 3px solid var(--accent); }
+    .admin-nav a i { width: 20px; text-align: center; }
+    .admin-nav .divider { height: 1px; background: var(--glass-border); margin: 1rem 1.5rem; }
+    .admin-main { flex: 1; margin-left: 260px; padding: 2rem; max-width: calc(100% - 260px); }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .admin-header h1 { font-size: 1.75rem; }
+    .admin-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+    .admin-stat {
+      background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 1.5rem;
+    }
+    .admin-stat .stat-icon { width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 1rem; }
+    .admin-stat .stat-value { font-family: 'DM Serif Display', serif; font-size: 2rem; font-weight: 700; }
+    .admin-stat .stat-label { font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; }
+    .admin-panel { display: none; }
+    .admin-panel.active { display: block; }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .panel-header h2 { font-size: 1.4rem; }
+    .data-table {
+      width: 100%; background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg); overflow: hidden;
+    }
+    .data-table table { width: 100%; border-collapse: collapse; }
+    .data-table th {
+      text-align: left; padding: 1rem 1.25rem; background: rgba(255,255,255,0.03);
+      font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--text-muted); border-bottom: 1px solid var(--glass-border);
+    }
+    .data-table td {
+      padding: 1rem 1.25rem; border-bottom: 1px solid var(--glass-border); font-size: 0.95rem;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .badge { padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; }
+    .badge-active { background: rgba(34,197,94,0.15); color: #22c55e; }
+    .badge-draft { background: rgba(251,191,36,0.15); color: #fbbf24; }
+    .badge-pending { background: rgba(249,115,22,0.15); color: #f97316; }
+    .badge-confirmed { background: rgba(34,197,94,0.15); color: #22c55e; }
+    .badge-rejected { background: rgba(239,68,68,0.15); color: #ef4444; }
+    .badge-admin { background: rgba(252,210,5,0.15); color: var(--accent); }
+    .badge-instructor { background: rgba(248,156,14,0.15); color: var(--accent-2); }
+    .badge-student { background: rgba(107,114,128,0.15); color: #9ca3af; }
+    .action-btns { display: flex; gap: 0.5rem; }
+    .action-btn {
+      width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-muted); cursor: pointer; display: flex;
+      align-items: center; justify-content: center; transition: var(--transition);
+    }
+    .action-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(252,210,5,0.1); }
+    .action-btn.danger:hover { border-color: #ef4444; color: #ef4444; background: rgba(239,68,68,0.1); }
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--secondary); border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
+      width: 90%; max-width: 700px; max-height: 85vh; overflow-y: auto; padding: 2rem;
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .modal-header h2 { font-size: 1.4rem; }
+    .modal-close { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+    .modal-close:hover { color: var(--text); }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 12px 16px; background: var(--glass); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 0.95rem; font-family: 'Inter', sans-serif;
+    }
+    .form-group textarea { min-height: 100px; resize: vertical; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(252,210,5,0.1);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .btn-group { display: flex; gap: 1rem; margin-top: 1.5rem; }
+    .btn-group .btn { flex: 1; }
+    .module-editor { margin-top: 1rem; }
+    .module-item {
+      background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);
+      border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;
+    }
+    .module-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+    .module-item-header input { flex: 1; font-weight: 600; }
+    .lesson-item {
+      display: flex; gap: 0.5rem; align-items: center; margin-left: 1.5rem; margin-bottom: 0.5rem;
+    }
+    .lesson-item input { flex: 1; }
+    .lesson-item input[type="text"]:first-child { flex: 2; }
+    .add-lesson-btn, .add-module-btn {
+      background: none; border: 1px dashed var(--border); color: var(--text-muted);
+      padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem;
+      transition: var(--transition); width: 100%;
+    }
+    .add-lesson-btn:hover, .add-module-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .empty-state {
+      text-align: center; padding: 4rem 2rem; color: var(--text-muted);
+    }
+    .empty-state i { font-size: 3rem; color: var(--accent); margin-bottom: 1rem; display: block; }
+    .search-bar {
+      display: flex; gap: 1rem; align-items: center;
+    }
+    .search-bar input {
+      padding: 10px 16px; background: var(--glass); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 0.95rem; width: 300px;
+    }
+    .search-bar input:focus { outline: none; border-color: var(--accent); }
+    .sidebar-toggle-admin {
+      display: none; position: fixed; bottom: 24px; left: 24px; width: 50px; height: 50px;
+      background: var(--gradient); border-radius: 50%; align-items: center; justify-content: center;
+      color: #000; font-size: 1.2rem; cursor: pointer; z-index: 100; box-shadow: var(--shadow-glow);
+    }
+    @media (max-width: 1200px) { .admin-stats { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 1024px) {
+      .admin-sidebar { transform: translateX(-100%); transition: var(--transition); z-index: 99; }
+      .admin-sidebar.active { transform: translateX(0); }
+      .admin-main { margin-left: 0; max-width: 100%; }
+      .sidebar-toggle-admin { display: flex; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) { .admin-stats { grid-template-columns: 1fr; } .data-table { overflow-x: auto; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <img src="images/Liberland_logo.png" alt="Liberland Logo">
+        <span class="logo-text">Liberland Academy</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="dashboard.html">Mi Panel</a></li>
+        <li><a href="admin.html" class="active nav-cta">Admin</a></li>
+        <li><a href="#" id="logoutBtn">Cerrar Sesión</a></li>
+      </ul>
+      <div class="nav-toggle"><span></span><span></span><span></span></div>
+    </div>
+  </nav>
+
+  <div class="admin-page">
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-sidebar-header">
+        <div class="user-info">
+          <div class="user-avatar" id="adminAvatar">A</div>
+          <div class="user-details">
+            <h3 id="adminName">Admin</h3>
+            <p>Administrador</p>
+          </div>
+        </div>
+      </div>
+      <nav class="admin-nav">
+        <a class="active" data-panel="dashboard"><i class="fas fa-th-large"></i> Dashboard</a>
+        <a data-panel="courses"><i class="fas fa-book"></i> Cursos</a>
+        <a data-panel="payments"><i class="fas fa-credit-card"></i> Pagos</a>
+        <a data-panel="users"><i class="fas fa-users"></i> Usuarios</a>
+        <a data-panel="sale"><i class="fas fa-tags"></i> Oferta</a>
+        <div class="divider"></div>
+        <a href="dashboard.html"><i class="fas fa-arrow-left"></i> Volver al Panel</a>
+        <a href="#" id="sidebarLogout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+      <!-- Dashboard Panel -->
+      <div class="admin-panel active" id="panel-dashboard">
+        <div class="admin-header">
+          <h1>Panel de Administración</h1>
+        </div>
+        <div class="admin-stats">
+          <div class="admin-stat">
+            <div class="stat-icon" style="background:rgba(252,210,5,0.15);color:var(--accent);"><i class="fas fa-book"></i></div>
+            <div class="stat-value" id="stat-total-courses">0</div>
+            <div class="stat-label">Total Cursos</div>
+          </div>
+          <div class="admin-stat">
+            <div class="stat-icon" style="background:rgba(34,197,94,0.15);color:#22c55e;"><i class="fas fa-users"></i></div>
+            <div class="stat-value" id="stat-total-users">0</div>
+            <div class="stat-label">Total Usuarios</div>
+          </div>
+          <div class="admin-stat">
+            <div class="stat-icon" style="background:rgba(248,156,14,0.15);color:var(--accent-2);"><i class="fas fa-graduation-cap"></i></div>
+            <div class="stat-value" id="stat-total-enrollments">0</div>
+            <div class="stat-label">Inscripciones</div>
+          </div>
+          <div class="admin-stat">
+            <div class="stat-icon" style="background:rgba(255,215,0,0.1);color:#ffd700;"><i class="fas fa-star"></i></div>
+            <div class="stat-value" id="stat-published-courses">0</div>
+            <div class="stat-label">Publicados</div>
+          </div>
+          <div class="admin-stat">
+            <div class="stat-icon" style="background:rgba(239,68,68,0.15);color:#ef4444;"><i class="fas fa-credit-card"></i></div>
+            <div class="stat-value" id="stat-pending-payments">0</div>
+            <div class="stat-label">Pagos Pendientes</div>
+          </div>
+          <div class="admin-stat">
+            <div class="stat-icon" style="background:rgba(34,197,94,0.15);color:#22c55e;"><i class="fas fa-dollar-sign"></i></div>
+            <div class="stat-value" id="stat-total-revenue">Bs 0</div>
+            <div class="stat-label">Ingresos Totales</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Courses Panel -->
+      <div class="admin-panel" id="panel-courses">
+        <div class="panel-header">
+          <h2>Gestión de Cursos</h2>
+          <div class="search-bar">
+            <input type="text" id="courseSearch" placeholder="Buscar cursos...">
+            <button class="btn btn-primary" id="addCourseBtn"><i class="fas fa-plus"></i> Nuevo Curso</button>
+          </div>
+        </div>
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Curso</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Estudiantes</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="coursesTableBody">
+              <tr><td colspan="6" class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Cargando cursos...</p></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Users Panel -->
+      <div class="admin-panel" id="panel-users">
+        <div class="panel-header">
+          <h2>Gestión de Usuarios</h2>
+          <div class="search-bar">
+            <input type="text" id="userSearch" placeholder="Buscar usuarios...">
+          </div>
+        </div>
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr><td colspan="5" class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Cargando usuarios...</p></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Payments Panel -->
+      <div class="admin-panel" id="panel-payments">
+        <div class="panel-header">
+          <h2>Pagos</h2>
+        </div>
+        <div class="monthly-summary" id="monthlySummary"></div>
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Curso</th>
+                <th>Monto</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="paymentsTableBody">
+              <tr><td colspan="6" class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Cargando pagos...</p></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Sale Config Panel -->
+      <div class="admin-panel" id="panel-sale">
+        <div class="panel-header">
+          <h2>Configurar Oferta Global</h2>
+        </div>
+        <div class="settings-card">
+          <div class="sale-status" id="saleStatus">
+            <div class="sale-status-indicator"></div>
+            <span>Verificando estado...</span>
+          </div>
+          <form id="saleForm">
+            <div class="form-group">
+              <label style="display:flex;align-items:center;gap:8px;">
+                <input type="checkbox" id="saleActive" style="width:auto;"> Activar oferta global (99 Bs)
+              </label>
+            </div>
+            <div class="form-group">
+              <label>Fecha y hora de fin de la oferta</label>
+              <input type="datetime-local" id="saleEndTime" required>
+            </div>
+            <div class="form-group">
+              <label>Precio de oferta (Bs)</label>
+              <input type="number" id="salePrice" value="99" min="1" required>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Configuración</button>
+          </form>
+          <div id="saleCountdown" style="margin-top:1.5rem;text-align:center;"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <button class="sidebar-toggle-admin" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+
+  <!-- Course Modal -->
+  <div class="modal-overlay" id="courseModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Nuevo Curso</h2>
+        <button class="modal-close" id="closeModal">&times;</button>
+      </div>
+      <form id="courseForm">
+        <input type="hidden" id="courseId">
+        <div class="form-group">
+          <label>Título del Curso</label>
+          <input type="text" id="cf-title" required placeholder="Ej: Smart Contracts con Solidity">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="cf-category" required>
+              <option value="Blockchain">Blockchain</option>
+              <option value="Forense">Forense</option>
+              <option value="Seguridad">Seguridad</option>
+              <option value="Web3">Web3</option>
+              <option value="Desarrollo Web">Desarrollo Web</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Badge</label>
+            <select id="cf-badge">
+              <option value="">Sin badge</option>
+              <option value="Nuevo">Nuevo</option>
+              <option value="Popular">Popular</option>
+              <option value="Gratis">Gratis</option>
+              <option value="Próximamente">Próximamente</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Descripción corta</label>
+          <input type="text" id="cf-description" required placeholder="Una línea descripción del curso">
+        </div>
+        <div class="form-group">
+          <label>Descripción larga</label>
+          <textarea id="cf-longDescription" placeholder="Descripción completa del curso..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>URL de imagen</label>
+            <input type="url" id="cf-image" placeholder="https://...">
+          </div>
+          <div class="form-group">
+            <label>Duración</label>
+            <input type="text" id="cf-duration" placeholder="Ej: 8 horas">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Precio (Bs)</label>
+            <input type="number" id="cf-priceBs" min="0" required placeholder="199">
+          </div>
+          <div class="form-group">
+            <label>Precio (USD)</label>
+            <input type="number" id="cf-priceUsd" min="0" placeholder="29">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nivel</label>
+            <select id="cf-level">
+              <option value="Principiante">Principiante</option>
+              <option value="Intermedio" selected>Intermedio</option>
+              <option value="Avanzado">Avanzado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Instructor</label>
+            <input type="text" id="cf-instructorName" placeholder="Nombre del instructor">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Título del Instructor</label>
+          <input type="text" id="cf-instructorTitle" placeholder="Ej: Smart Contracts Engineer">
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:8px;">
+            <input type="checkbox" id="cf-published" checked style="width:auto;"> Publicado
+          </label>
+        </div>
+
+        <h3 style="margin-top:1.5rem;margin-bottom:1rem;">Módulos del Curso</h3>
+        <div id="modulesEditor" class="module-editor"></div>
+        <button type="button" class="add-module-btn" id="addModuleBtn"><i class="fas fa-plus"></i> Agregar Módulo</button>
+
+        <div class="btn-group">
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Curso</button>
+          <button type="button" class="btn btn-secondary" id="cancelModal">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- User Role Modal -->
+  <div class="modal-overlay" id="roleModal">
+    <div class="modal" style="max-width:400px;">
+      <div class="modal-header">
+        <h2>Cambiar Rol</h2>
+        <button class="modal-close" id="closeRoleModal">&times;</button>
+      </div>
+      <input type="hidden" id="roleUserId">
+      <div class="form-group">
+        <label>Nuevo Rol</label>
+        <select id="newRole">
+          <option value="student">Estudiante</option>
+          <option value="instructor">Instructor</option>
+          <option value="admin">Administrador</option>
+        </select>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="saveRoleBtn"><i class="fas fa-save"></i> Guardar</button>
+        <button class="btn btn-secondary" id="cancelRoleBtn">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enrollments Modal -->
+  <div class="modal-overlay" id="enrollmentsModal">
+    <div class="modal" style="max-width:650px;">
+      <div class="modal-header">
+        <h2 id="enrollmentsModalTitle">Inscritos</h2>
+        <button class="modal-close" id="closeEnrollmentsModal">&times;</button>
+      </div>
+      <div id="enrollmentsList" style="max-height:60vh;overflow-y:auto;"></div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
