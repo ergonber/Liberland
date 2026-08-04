@@ -83,33 +83,35 @@ function renderCoursesTable(courses) {
     tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><i class="fas fa-book"></i><p>No hay cursos aún</p></td></tr>';
     return;
   }
-  tbody.innerHTML = courses.map(course => `
+  tbody.innerHTML = courses.map(course => {
+    const e = window.escapeHtml;
+    return `
     <tr>
       <td>
         <div style="display:flex;align-items:center;gap:12px;">
-          <img src="${course.image || 'https://via.placeholder.com/60x40'}" alt="" style="width:60px;height:40px;border-radius:6px;object-fit:cover;">
+          <img src="${e(course.image || 'https://via.placeholder.com/60x40')}" alt="" style="width:60px;height:40px;border-radius:6px;object-fit:cover;">
           <div>
-            <div style="font-weight:600;">${course.title}</div>
-            <div style="font-size:0.8rem;color:var(--text-dim);">${course.instructorName || 'Sin instructor'}</div>
+            <div style="font-weight:600;">${e(course.title)}</div>
+            <div style="font-size:0.8rem;color:var(--text-dim);">${e(course.instructorName || 'Sin instructor')}</div>
           </div>
         </div>
       </td>
-      <td>${course.category}</td>
+      <td>${e(course.category)}</td>
       <td>${course.priceBs === 0 ? 'Gratis' : 'Bs ' + course.priceBs}</td>
       <td>
-        <button class="action-btn" title="Ver inscritos" onclick="viewEnrollments('${course.id}', '${course.title.replace(/'/g, "\\'")}')" style="color:var(--accent);font-weight:600;cursor:pointer;background:none;border:none;padding:4px 8px;">
+        <button class="action-btn" title="Ver inscritos" onclick="viewEnrollments('${e(course.id)}', '${e(course.title).replace(/'/g, "\\'")}')" style="color:var(--accent);font-weight:600;cursor:pointer;background:none;border:none;padding:4px 8px;">
           <i class="fas fa-users"></i> ${course.students || 0}
         </button>
       </td>
       <td><span class="badge ${course.published ? 'badge-active' : 'badge-draft'}">${course.published ? 'Publicado' : 'Borrador'}</span></td>
       <td>
         <div class="action-btns">
-          <button class="action-btn" title="Editar" onclick="editCourse('${course.id}')"><i class="fas fa-edit"></i></button>
-          <button class="action-btn danger" title="Eliminar" onclick="deleteCourse('${course.id}', '${course.title.replace(/'/g, "\\'")}')"><i class="fas fa-trash"></i></button>
+          <button class="action-btn" title="Editar" onclick="editCourse('${e(course.id)}')"><i class="fas fa-edit"></i></button>
+          <button class="action-btn danger" title="Eliminar" onclick="deleteCourse('${e(course.id)}', '${e(course.title).replace(/'/g, "\\'")}')"><i class="fas fa-trash"></i></button>
         </div>
       </td>
     </tr>
-  `).join('');
+  `}).join('');
 }
 
 // Search courses
@@ -302,6 +304,7 @@ function renderUsersTable(users) {
     return;
   }
   tbody.innerHTML = users.map(user => {
+    const e = window.escapeHtml;
     const name = user.name || 'Sin nombre';
     const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
     const role = user.role || 'student';
@@ -310,16 +313,16 @@ function renderUsersTable(users) {
       <tr>
         <td>
           <div style="display:flex;align-items:center;gap:12px;">
-            <div style="width:36px;height:36px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-weight:700;color:#000;font-size:0.85rem;">${initials}</div>
-            <span style="font-weight:500;">${name}</span>
+            <div style="width:36px;height:36px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-weight:700;color:#000;font-size:0.85rem;">${e(initials)}</div>
+            <span style="font-weight:500;">${e(name)}</span>
           </div>
         </td>
-        <td>${user.email || 'N/A'}</td>
+        <td>${e(user.email || 'N/A')}</td>
         <td><span class="badge badge-${role}">${role === 'admin' ? 'Admin' : role === 'instructor' ? 'Instructor' : 'Estudiante'}</span></td>
         <td>${date}</td>
         <td>
           <div class="action-btns">
-            <button class="action-btn" title="Cambiar rol" onclick="openRoleModal('${user.id}', '${role}')"><i class="fas fa-user-shield"></i></button>
+            <button class="action-btn" title="Cambiar rol" onclick="openRoleModal('${e(user.id)}', '${e(role)}')"><i class="fas fa-user-shield"></i></button>
           </div>
         </td>
       </tr>
@@ -403,19 +406,20 @@ function renderPaymentsTable(payments) {
     return;
   }
   tbody.innerHTML = payments.map(p => {
+    const e = window.escapeHtml;
     const date = p.createdAt ? new Date(p.createdAt.seconds * 1000).toLocaleDateString('es-BO') : 'N/A';
-    const userName = p.userName || p.userEmail || 'Usuario';
+    const userName = e(p.userName || p.userEmail || 'Usuario');
     const statusClass = p.status === 'confirmed' ? 'badge-confirmed' : p.status === 'rejected' ? 'badge-rejected' : 'badge-pending';
     const statusText = p.status === 'confirmed' ? 'Confirmado' : p.status === 'rejected' ? 'Rechazado' : 'Pendiente';
     const actions = p.status === 'pending' ? `
       <div class="action-btns">
-        <button class="action-btn" title="Confirmar" onclick="confirmPayment('${p.id}')" style="color:#22c55e;"><i class="fas fa-check"></i></button>
-        <button class="action-btn danger" title="Rechazar" onclick="rejectPayment('${p.id}')"><i class="fas fa-times"></i></button>
+        <button class="action-btn" title="Confirmar" onclick="confirmPayment('${e(p.id)}')" style="color:#22c55e;"><i class="fas fa-check"></i></button>
+        <button class="action-btn danger" title="Rechazar" onclick="rejectPayment('${e(p.id)}')"><i class="fas fa-times"></i></button>
       </div>` : `<span style="color:var(--text-dim);font-size:0.8rem;">${p.status === 'confirmed' ? 'Aprobado' : 'Rechazado'}</span>`;
     return `
       <tr>
         <td>${userName}</td>
-        <td>${p.courseTitle || 'Curso'}</td>
+        <td>${e(p.courseTitle || 'Curso')}</td>
         <td><strong>Bs ${p.amount || 0}</strong></td>
         <td>${date}</td>
         <td><span class="badge ${statusClass}">${statusText}</span></td>
@@ -428,7 +432,22 @@ function renderPaymentsTable(payments) {
 window.confirmPayment = async function(paymentId) {
   if (!confirm('¿Confirmar este pago e inscribir al usuario?')) return;
   try {
-    await window.fb.confirmPayment(paymentId);
+    const paymentDoc = await window.firebaseDB.doc('payments/' + paymentId).get();
+    if (!paymentDoc.exists) { alert('Pago no encontrado'); return; }
+    const payment = paymentDoc.data();
+    await window.firebaseDB.doc('payments/' + paymentId).update({ status: 'confirmed' });
+    await window.firebaseDB.collection('enrollments').add({
+      userId: payment.userId,
+      courseId: payment.courseId,
+      progress: 0,
+      enrolledAt: window.firebaseDB.constructor.prototype.serverTimestamp ? firebase.firestore.FieldValue.serverTimestamp() : new Date(),
+      lastAccessed: window.firebaseDB.constructor.prototype.serverTimestamp ? firebase.firestore.FieldValue.serverTimestamp() : new Date()
+    });
+    const courseRef = window.firebaseDB.doc('courses/' + payment.courseId);
+    const courseDoc = await courseRef.get();
+    if (courseDoc.exists) {
+      await courseRef.update({ students: (courseDoc.data().students || 0) + 1 });
+    }
     alert('Pago confirmado. Usuario inscrito exitosamente.');
     await loadPayments();
     await loadDashboardStats();
@@ -441,7 +460,7 @@ window.confirmPayment = async function(paymentId) {
 window.rejectPayment = async function(paymentId) {
   if (!confirm('¿Rechazar este pago?')) return;
   try {
-    await window.fb.rejectPayment(paymentId);
+    await window.firebaseDB.doc('payments/' + paymentId).update({ status: 'rejected' });
     alert('Pago rechazado.');
     await loadPayments();
   } catch (error) {
@@ -479,12 +498,13 @@ window.viewEnrollments = async function(courseId, courseTitle) {
         </thead>
         <tbody>
           ${enrollments.map(e => {
+            const esc = window.escapeHtml;
             const date = e.enrolledAt ? new Date(e.enrolledAt.seconds * 1000).toLocaleDateString('es-BO') : 'N/A';
             const progress = e.progress || 0;
             return `
               <tr style="border-bottom:1px solid var(--glass-border);">
-                <td style="padding:10px 8px;font-weight:500;">${e.userName}</td>
-                <td style="padding:10px 8px;color:var(--text-dim);font-size:0.9rem;">${e.userEmail}</td>
+                <td style="padding:10px 8px;font-weight:500;">${esc(e.userName)}</td>
+                <td style="padding:10px 8px;color:var(--text-dim);font-size:0.9rem;">${esc(e.userEmail)}</td>
                 <td style="padding:10px 8px;">
                   <div style="display:flex;align-items:center;gap:8px;">
                     <div style="flex:1;height:6px;background:var(--glass);border-radius:3px;overflow:hidden;">
@@ -625,6 +645,6 @@ document.getElementById('saleForm').addEventListener('submit', async (e) => {
     await loadSaleConfig();
   } catch (error) {
     console.error('Error saving sale config:', error);
-    alert('Error al guardar. Verifica que Firestore tenga permisos de escritura en la colección "config/sale".\n\nDetalle: ' + (error.message || error));
+    alert('Error al guardar la configuración de oferta.');
   }
 });

@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous"/>
   
   <!-- Custom Styles -->
   <link rel="stylesheet" href="css/styles.css">
@@ -810,10 +810,10 @@
   </main>
 
   <!-- Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" integrity="sha384-sEVIly94UBRLKWdkYoPpSG7GD/e79YHMrxVyZaOk712Ga7+EAw6w1EFi+xBzBdd+" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js" integrity="sha384-EkqK+ezBWJuvO3hfrSx2iVqr3YQbhmnzn8kPhOpBZ+0GMVU5oGSgptwIu8D84HjE" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js" integrity="sha384-M481iNZJtbpypKgvlvZ+78Giq0BsewFLk5r2k+MOcGXlwKCc27DQRZ+WCV/zpmpC" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js" integrity="sha384-6I0gWsz4FIAr30c0TxIxJnPQuJiZ1FfILdZrgJdjxTH3R8dgPGTvexbyqTvReV6Z" crossorigin="anonymous"></script>
   <script src="js/firebase-config.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/app.js"></script>
@@ -977,12 +977,13 @@
         }
 
         // Curriculum
+        const e = window.escapeHtml;
         const curriculumEl = document.querySelector('.curriculum');
         if (currentCourse.modules && currentCourse.modules.length > 0) {
           curriculumEl.innerHTML = '<h2>Contenido del Curso</h2>' + currentCourse.modules.map((mod, i) => `
             <div class="module${i === 0 ? ' active' : ''}">
               <div class="module-header">
-                <h3><i class="fas fa-${i === 0 ? 'chevron-down' : 'chevron-right'}"></i> Módulo ${i + 1}: ${mod.title}</h3>
+                <h3><i class="fas fa-${i === 0 ? 'chevron-down' : 'chevron-right'}"></i> Módulo ${i + 1}: ${e(mod.title)}</h3>
                 <div class="module-meta">
                   <span>${mod.lessons.length} lecciones</span>
                   <span>${mod.lessons.reduce((acc, l) => acc + (parseInt(l.duration) || 0), 0)} min</span>
@@ -993,9 +994,9 @@
                   <div class="lesson">
                     <div class="lesson-info">
                       <i class="fas fa-${lesson.type === 'exercise' ? 'file-alt' : 'play-circle'}"></i>
-                      <span>${lesson.title}</span>
+                      <span>${e(lesson.title)}</span>
                     </div>
-                    <div class="lesson-duration">${lesson.duration}</div>
+                    <div class="lesson-duration">${e(lesson.duration)}</div>
                     ${lesson.videoUrl ? '<span class="lesson-preview">Preview</span>' : ''}
                   </div>
                 `).join('')}
@@ -1019,7 +1020,7 @@
           document.querySelector('.feature-list').innerHTML = currentCourse.included.map(item => {
             const icons = ['video', 'file-code', 'certificate', 'infinity', 'mobile-alt', 'headset'];
             const icon = icons[Math.floor(Math.random() * icons.length)] || 'check';
-            return `<li><i class="fas fa-${icon}"></i> ${item}</li>`;
+            return `<li><i class="fas fa-${icon}"></i> ${e(item)}</li>`;
           }).join('');
         }
 
@@ -1027,8 +1028,8 @@
         if (currentCourse.requirements) {
           const prereq = currentCourse.requirements.prerequisites || [];
           const tools = currentCourse.requirements.tools || [];
-          document.querySelector('.requirements-col:first-child ul').innerHTML = prereq.map(r => `<li><i class="fas fa-check"></i> ${r}</li>`).join('');
-          document.querySelector('.requirements-col:last-child ul').innerHTML = tools.map(t => `<li><i class="fas fa-check"></i> ${t}</li>`).join('');
+          document.querySelector('.requirements-col:first-child ul').innerHTML = prereq.map(r => `<li><i class="fas fa-check"></i> ${e(r)}</li>`).join('');
+          document.querySelector('.requirements-col:last-child ul').innerHTML = tools.map(t => `<li><i class="fas fa-check"></i> ${e(t)}</li>`).join('');
         }
 
       } catch (error) {
@@ -1136,7 +1137,16 @@
         confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registrando...';
 
         try {
-          await window.fb.createPayment(data);
+          await window.firebaseDB.collection('payments').add({
+            userId: data.userId,
+            courseId: data.courseId,
+            courseTitle: data.courseTitle,
+            userName: data.userName,
+            userEmail: data.userEmail,
+            amount: data.amount,
+            status: 'pending',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
 
           // Hide all siblings of paymentConfirmation
           const modalContent = document.querySelector('#paymentModal .modal > div');

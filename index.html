@@ -16,7 +16,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous"/>
   
   <!-- Custom Styles -->
   <link rel="stylesheet" href="css/styles.css">
@@ -643,9 +643,9 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" integrity="sha384-sEVIly94UBRLKWdkYoPpSG7GD/e79YHMrxVyZaOk712Ga7+EAw6w1EFi+xBzBdd+" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js" integrity="sha384-EkqK+ezBWJuvO3hfrSx2iVqr3YQbhmnzn8kPhOpBZ+0GMVU5oGSgptwIu8D84HjE" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js" integrity="sha384-M481iNZJtbpypKgvlvZ+78Giq0BsewFLk5r2k+MOcGXlwKCc27DQRZ+WCV/zpmpC" crossorigin="anonymous"></script>
   <script src="js/firebase-config.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/particles.js"></script>
@@ -700,7 +700,7 @@
           banner.style.cssText = 'background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(239,68,68,0.05));border:1px solid rgba(239,68,68,0.3);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;text-align:center;';
           banner.innerHTML = `
             <div style="font-size:1.1rem;font-weight:700;color:#ef4444;margin-bottom:0.5rem;">
-              <i class="fas fa-fire" style="margin-right:8px;"></i>OFERTA ESPECIAL - Todos los cursos a Bs ${saleConfig.salePrice || 99}
+              <i class="fas fa-fire" style="margin-right:8px;"></i>OFERTA ESPECIAL - Todos los cursos a Bs ${window.escapeHtml(String(saleConfig.salePrice || 99))}
             </div>
             <div id="saleBannerCountdown" class="countdown"></div>
           `;
@@ -744,42 +744,43 @@
     }
 
     function renderCourseCards(courses, saleActive, salePrice) {
+      const e = window.escapeHtml;
       const coursesGrid = document.querySelector('.courses-grid');
       coursesGrid.innerHTML = courses.map(course => {
         const badgeHtml = saleActive && course.priceBs > 0
           ? '<span class="sale-badge">OFERTA</span>'
-          : (course.badge ? `<span class="course-badge">${course.badge}</span>` : '');
+          : (course.badge ? `<span class="course-badge">${e(course.badge)}</span>` : '');
 
         let priceHtml;
         if (course.priceBs === 0) {
           priceHtml = '<span class="price-main">Gratis</span><span class="price-usd">0 Bs</span>';
         } else if (saleActive && course.priceBs > 0) {
           priceHtml = `<div class="price-sale">
-            <span class="price-original">Bs ${course.priceBs}</span>
-            <span class="price-current">Bs ${salePrice}</span>
+            <span class="price-original">Bs ${e(String(course.priceBs))}</span>
+            <span class="price-current">Bs ${e(String(salePrice))}</span>
           </div>`;
         } else {
-          priceHtml = `<span class="price-main">Bs ${course.priceBs}</span><span class="price-usd">~$${course.priceUsd} USD</span>`;
+          priceHtml = `<span class="price-main">Bs ${e(String(course.priceBs))}</span><span class="price-usd">~$${e(String(course.priceUsd))} USD</span>`;
         }
 
         const btnHtml = course.published === false
           ? '<a href="#" class="btn-course">Próximamente</a>'
-          : `<a href="course.html?id=${course.id}" class="btn-course">Ver Curso</a>`;
+          : `<a href="course.html?id=${e(course.id)}" class="btn-course">Ver Curso</a>`;
 
         return `
           <div class="course-card animate-on-scroll">
             <div class="course-image">
-              <img src="${course.image || 'https://via.placeholder.com/600x400'}" alt="${course.title}">
+              <img src="${e(course.image || 'https://via.placeholder.com/600x400')}" alt="${e(course.title)}">
               ${badgeHtml}
               <div class="play-overlay"><i class="fas fa-play-circle"></i></div>
             </div>
             <div class="course-content">
-              <span class="course-category">${course.category}</span>
-              <h3>${course.title}</h3>
-              <p>${course.description}</p>
+              <span class="course-category">${e(course.category)}</span>
+              <h3>${e(course.title)}</h3>
+              <p>${e(course.description)}</p>
               <div class="course-meta">
-                <span><i class="fas fa-clock"></i> ${course.duration}</span>
-                <span><i class="fas fa-users"></i> ${course.students || 0} estudiantes</span>
+                <span><i class="fas fa-clock"></i> ${e(course.duration)}</span>
+                <span><i class="fas fa-users"></i> ${e(String(course.students || 0))} estudiantes</span>
               </div>
               <div class="course-footer">
                 <div class="course-price">${priceHtml}</div>

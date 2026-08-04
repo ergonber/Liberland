@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous"/>
   
   <!-- Custom Styles -->
   <link rel="stylesheet" href="css/styles.css">
@@ -779,10 +779,10 @@
   </button>
 
   <!-- Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" integrity="sha384-sEVIly94UBRLKWdkYoPpSG7GD/e79YHMrxVyZaOk712Ga7+EAw6w1EFi+xBzBdd+" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js" integrity="sha384-EkqK+ezBWJuvO3hfrSx2iVqr3YQbhmnzn8kPhOpBZ+0GMVU5oGSgptwIu8D84HjE" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js" integrity="sha384-M481iNZJtbpypKgvlvZ+78Giq0BsewFLk5r2k+MOcGXlwKCc27DQRZ+WCV/zpmpC" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js" integrity="sha384-6I0gWsz4FIAr30c0TxIxJnPQuJiZ1FfILdZrgJdjxTH3R8dgPGTvexbyqTvReV6Z" crossorigin="anonymous"></script>
   <script src="js/firebase-config.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/app.js"></script>
@@ -819,6 +819,7 @@
 
     // ===== LOAD DASHBOARD =====
     async function loadDashboard(user, userData) {
+      const e = window.escapeHtml;
       const name = userData?.name || user.displayName || user.email.split('@')[0];
       const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
       const role = userData?.role || 'student';
@@ -861,17 +862,17 @@
           const courseItem = document.createElement('div');
           courseItem.className = 'course-item';
           courseItem.innerHTML = `
-            <div class="course-thumb"><img src="${course.image || 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=200&h=140&fit=crop'}" alt="${course.title}"></div>
+            <div class="course-thumb"><img src="${e(course.image || 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=200&h=140&fit=crop')}" alt="${e(course.title)}"></div>
             <div class="course-details">
-              <h3>${course.title}</h3>
-              <p>${course.category || 'Curso'}</p>
+              <h3>${e(course.title)}</h3>
+              <p>${e(course.category || 'Curso')}</p>
               <div class="course-progress">
                 <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
                 <span class="progress-text">${progress}%</span>
               </div>
             </div>
             <div class="course-actions">
-              <a href="course.html?id=${course.id}" class="btn-continue"><i class="fas fa-play"></i> Continuar</a>
+              <a href="course.html?id=${e(course.id)}" class="btn-continue"><i class="fas fa-play"></i> Continuar</a>
             </div>`;
           coursesList.appendChild(courseItem);
         }
@@ -906,6 +907,7 @@
 
     // ===== ALL COURSES =====
     async function loadAllCourses() {
+      const e = window.escapeHtml;
       const list = document.getElementById('allCoursesList');
       if (allEnrollments.length === 0) {
         list.innerHTML = `<div class="empty-state"><i class="fas fa-graduation-cap"></i><p>No tienes cursos inscritos</p><a href="index.html#courses" class="btn btn-primary" style="display:inline-flex;">Explorar Cursos</a></div>`;
@@ -919,17 +921,17 @@
         const item = document.createElement('div');
         item.className = 'course-item';
         item.innerHTML = `
-          <div class="course-thumb"><img src="${course.image || 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=200&h=140&fit=crop'}" alt="${course.title}"></div>
+          <div class="course-thumb"><img src="${e(course.image || 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=200&h=140&fit=crop')}" alt="${e(course.title)}"></div>
           <div class="course-details">
-            <h3>${course.title}</h3>
-            <p>${course.category} · ${course.level || 'Intermedio'}</p>
+            <h3>${e(course.title)}</h3>
+            <p>${e(course.category)} · ${e(course.level || 'Intermedio')}</p>
             <div class="course-progress">
               <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
               <span class="progress-text">${progress}%</span>
             </div>
           </div>
           <div class="course-actions">
-            <a href="course.html?id=${course.id}" class="btn-continue"><i class="fas fa-play"></i> Continuar</a>
+            <a href="course.html?id=${e(course.id)}" class="btn-continue"><i class="fas fa-play"></i> Continuar</a>
           </div>`;
         list.appendChild(item);
       }
@@ -937,8 +939,9 @@
 
     // ===== CERTIFICATES =====
     async function loadCertificates() {
+      const e = window.escapeHtml;
       const list = document.getElementById('certificatesList');
-      const completed = allEnrollments.filter(e => (e.progress || 0) >= 100);
+      const completed = allEnrollments.filter(en => (en.progress || 0) >= 100);
       if (completed.length === 0) {
         list.innerHTML = `<div class="empty-state"><i class="fas fa-certificate"></i><p>Aún no has completado ningún curso</p><p style="font-size:0.9rem;">¡Sigue aprendiendo! Cuando completes un curso, tu certificado aparecerá aquí.</p></div>`;
         return;
@@ -953,11 +956,11 @@
         card.innerHTML = `
           <div class="cert-icon"><i class="fas fa-award"></i></div>
           <div class="cert-info">
-            <h3>${course.title}</h3>
-            <p>${course.category} · ${course.instructorName || 'Liberland Academy'}</p>
+            <h3>${e(course.title)}</h3>
+            <p>${e(course.category)} · ${e(course.instructorName || 'Liberland Academy')}</p>
             <span class="cert-date">Completado: ${date}</span>
           </div>
-          <button class="btn-cert" onclick="downloadCertificate('${course.title}', '${course.category}')"><i class="fas fa-download"></i> Descargar</button>`;
+          <button class="btn-cert" onclick="downloadCertificate('${e(course.title)}', '${e(course.category)}')"><i class="fas fa-download"></i> Descargar</button>`;
         list.appendChild(card);
       }
     }
@@ -995,6 +998,7 @@
 
     // ===== PAYMENTS =====
     async function loadPayments() {
+      const e = window.escapeHtml;
       const tbody = document.getElementById('paymentsBody');
       tbody.innerHTML = '';
 
@@ -1009,8 +1013,8 @@
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${date}</td>
-          <td>${course.title}</td>
-          <td style="font-weight:600;">Bs ${course.priceBs}</td>
+          <td>${e(course.title)}</td>
+          <td style="font-weight:600;">Bs ${e(String(course.priceBs))}</td>
           <td><span class="status-badge status-paid">Pagado</span></td>`;
         tbody.appendChild(row);
       }
@@ -1024,13 +1028,13 @@
           const row = document.createElement('tr');
           row.innerHTML = `
             <td>${date}</td>
-            <td>${payment.courseTitle || 'Curso'}</td>
-            <td style="font-weight:600;">Bs ${payment.amount || 0}</td>
+            <td>${e(payment.courseTitle || 'Curso')}</td>
+            <td style="font-weight:600;">Bs ${e(String(payment.amount || 0))}</td>
             <td><span class="status-badge status-pending">Pendiente de aprobación</span></td>`;
           tbody.appendChild(row);
         }
-      } catch (e) {
-        console.warn('Error loading pending payments:', e);
+      } catch (err) {
+        console.warn('Error loading pending payments:', err);
         if (!hasRows) {
           tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:1.5rem;color:var(--accent);"><i class="fas fa-info-circle" style="margin-right:8px;"></i>No se pudieron cargar los pagos pendientes. Si realizaste un pago, contacta al admin por WhatsApp.</td></tr>`;
         }
@@ -1043,6 +1047,7 @@
 
     // ===== WISHLIST =====
     async function loadWishlist() {
+      const e = window.escapeHtml;
       const grid = document.getElementById('wishlistGrid');
       try {
         const snap = await db.collection('wishlist').where('userId', '==', currentUser.uid).get();
@@ -1058,16 +1063,16 @@
           const card = document.createElement('div');
           card.className = 'wishlist-card';
           card.innerHTML = `
-            <img src="${course.image || 'https://via.placeholder.com/400x200'}" alt="${course.title}">
+            <img src="${e(course.image || 'https://via.placeholder.com/400x200')}" alt="${e(course.title)}">
             <div class="wishlist-card-body">
-              <h3>${course.title}</h3>
-              <span class="price">${course.priceBs === 0 ? 'Gratis' : 'Bs ' + course.priceBs}</span>
-              <br><a href="course.html?id=${course.id}" class="btn-continue" style="display:inline-flex;margin-top:0.75rem;"><i class="fas fa-eye"></i> Ver Curso</a>
-              <button class="wishlist-remove" onclick="removeWishlist('${doc.id}')"><i class="fas fa-trash"></i> Eliminar</button>
+              <h3>${e(course.title)}</h3>
+              <span class="price">${course.priceBs === 0 ? 'Gratis' : 'Bs ' + e(String(course.priceBs))}</span>
+              <br><a href="course.html?id=${e(course.id)}" class="btn-continue" style="display:inline-flex;margin-top:0.75rem;"><i class="fas fa-eye"></i> Ver Curso</a>
+              <button class="wishlist-remove" onclick="removeWishlist('${e(doc.id)}')"><i class="fas fa-trash"></i> Eliminar</button>
             </div>`;
           grid.appendChild(card);
         }
-      } catch (e) {
+      } catch (err) {
         grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-heart"></i><p>Tu lista de deseos está vacía</p><a href="index.html#courses" class="btn btn-primary" style="display:inline-flex;">Explorar Cursos</a></div>`;
       }
     }

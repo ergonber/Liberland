@@ -1,3 +1,11 @@
+// Security: HTML escape function to prevent XSS
+window.escapeHtml = function(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+};
+
 // Firebase Configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAV1PEYMk5_eHvrclSXfOxurD_ptfSygUw",
@@ -211,14 +219,7 @@ window.fb = {
     return await storageRef.getDownloadURL();
   },
 
-  // Helper: Create payment record
-  async createPayment(data) {
-    return await db.collection('payments').add({
-      ...data,
-      status: 'pending',
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-  },
+  // createPayment removed from public API - use Firestore directly in calling code
 
   // Helper: Get pending payments
   async getPendingPayments() {
@@ -232,31 +233,7 @@ window.fb = {
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   },
 
-  // Helper: Confirm payment + enroll user
-  async confirmPayment(paymentId) {
-    const paymentDoc = await db.doc('payments/' + paymentId).get();
-    if (!paymentDoc.exists) return;
-    const payment = paymentDoc.data();
-    await db.doc('payments/' + paymentId).update({ status: 'confirmed' });
-    await db.collection('enrollments').add({
-      userId: payment.userId,
-      courseId: payment.courseId,
-      progress: 0,
-      enrolledAt: firebase.firestore.FieldValue.serverTimestamp(),
-      lastAccessed: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    // Update course student count
-    const courseRef = db.doc('courses/' + payment.courseId);
-    const courseDoc = await courseRef.get();
-    if (courseDoc.exists) {
-      await courseRef.update({ students: (courseDoc.data().students || 0) + 1 });
-    }
-  },
-
-  // Helper: Reject payment
-  async rejectPayment(paymentId) {
-    await db.doc('payments/' + paymentId).update({ status: 'rejected' });
-  },
+  // confirmPayment removed from public API - use Firestore directly in calling code
 
   // Helper: Get enrollments by courseId with user info
   async getEnrollmentsByCourse(courseId) {

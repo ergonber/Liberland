@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow read: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      allow create: if request.auth != null && request.auth.uid == uid;
+      allow update: if request.auth != null && request.auth.uid == uid;
+      allow update: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    match /courses/{courseId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    match /enrollments/{enrollmentId} {
+      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow read: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      allow create: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      allow update: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    match /payments/{paymentId} {
+      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow read: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    match /wishlist/{docId} {
+      allow read, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+    match /config/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+  }
+}
